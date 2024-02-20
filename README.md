@@ -1,86 +1,82 @@
-# 📚 React.js introducing
+# 📚 React.js Introducing
 
-Учебное пособие в виде конспекта для студентов курса [RS School React Course](https://rs.school/react).
+Sections are arranged in increasing order of complexity; all examples in the README.md sections are written in JavaScript. Where there are clarifications using TypeScript, this is indicated.
 
-Разделы располагаются в порядке возрастания сложности, все примеры в разделах README.md написаны на JavaScript, там где
-есть уточнения с использованием TypeScript это указано.
+Code examples in the sections are written in [TypeScript](https://www.typescriptlang.org/) + [Tailwind CSS](https://tailwindcss.com/).
 
-Примеры кода в разделах написаны
-на [TypeScript](https://www.typescriptlang.org/) + [Tailwind CSS](https://tailwindcss.com/).
-
-* [Знакомство с JSX](https://github.com/shopot/react-101/tree/jsx)
-* [Отрисовка элементов](https://github.com/shopot/react-101/tree/react-render)
-* [Компоненты - одна из основных концепций React](https://github.com/shopot/react-101/tree/components)
-* [Условный рендеринг](https://github.com/shopot/react-101/tree/conditional-rendering)
-* [Обработка событий](https://github.com/shopot/react-101/tree/event-handling)
-* [Списки и ключи - React Key Concepts](https://github.com/shopot/react-101/tree/rendering-lists)
-* [Состояние: память компонента, знакомство с useState](https://github.com/shopot/react-101/tree/hook-use-state)
-* [Применение стилей CSS - краткий обзор](https://github.com/shopot/react-101/tree/react-styling)
-* [React DOM компоненты - компоненты форм](https://github.com/shopot/react-101/tree/form-components)
-* [Совместное использование состояния между компонентами](https://github.com/shopot/react-101/tree/sharing-state)
-* [Знакомство с хуком useEffect](https://github.com/shopot/react-101/tree/hook-use-effect)
-* [Руководство React Quiz App - Мыслим как React](https://github.com/shopot/react-101/tree/react-quiz-app)
-* [Получение данных - Fetching data](https://github.com/shopot/react-101/tree/fetching-data)
-* [Маршрутизация в SPA - React Routing](https://github.com/shopot/react-101/tree/react-routing)
-* [Знакомство с хуком useReducer](https://github.com/shopot/react-101/tree/hook-use-reducer)
-* [Знакомство с хуком useRef](https://github.com/shopot/react-101/tree/hook-use-ref)
-* [Знакомство с хуком useContext](https://github.com/shopot/react-101/tree/hook-use-context)
-* [Работа с формами - обзор библиотеки React Hook Form](https://github.com/shopot/react-101/tree/react-hook-form)
-* [Знакомство с React API: createPortal](https://github.com/shopot/react-101/tree/react-create-portal)
-* [Путеводитель по Flux в картинках](https://github.com/shopot/react-101/tree/react-flux)
-* [Знакомство с Redux](https://github.com/shopot/react-101/tree/redux-base)
-* [Знакомство с Redux Toolkit (RTK)](https://github.com/shopot/react-101/tree/redux-toolkit-quick)
-* [Знакомство с RTK Query](https://github.com/shopot/react-101/tree/rtk-query)
-* [Новые возможности в Redux Toolkit 2.0](https://github.com/shopot/react-101/tree/redux-tollkit-2)
-* [Знакомство MobX](https://github.com/shopot/react-101/tree/mobx)
+* [Introduction to JSX](https://github.com/cpetrescu96/react-101/tree/jsx)
+* [Rendering Elements](https://github.com/cpetrescu96/react-101/tree/react-render)
+* [Components - One of the Main React Concepts](https://github.com/cpetrescu96/react-101/tree/components)
+* [Conditional Rendering](https://github.com/cpetrescu96/react-101/tree/conditional-rendering)
+* [Event Handling](https://github.com/cpetrescu96/react-101/tree/event-handling)
+* [Lists and Keys - React Key Concepts](https://github.com/cpetrescu96/react-101/tree/rendering-lists)
+* [State: Component Memory, Introduction to useState](https://github.com/cpetrescu96/react-101/tree/hook-use-state)
+* [Applying CSS Styles - Brief Overview](https://github.com/cpetrescu96/react-101/tree/react-styling)
+* [React DOM Components - Form Components](https://github.com/cpetrescu96/react-101/tree/form-components)
+* [Sharing State Between Components](https://github.com/cpetrescu96/react-101/tree/sharing-state)
+* [Introduction to useEffect Hook](https://github.com/cpetrescu96/react-101/tree/hook-use-effect)
+* [React Quiz App Guide - Thinking Like React](https://github.com/cpetrescu96/react-101/tree/react-quiz-app)
+* [Data Fetching - Fetching data](https://github.com/cpetrescu96/react-101/tree/fetching-data)
+* [SPA Routing - React Routing](https://github.com/cpetrescu96/react-101/tree/react-routing)
+* [Introduction to useReducer Hook](https://github.com/cpetrescu96/react-101/tree/hook-use-reducer)
+* [Introduction to useRef Hook](https://github.com/cpetrescu96/react-101/tree/hook-use-ref)
+* [Introduction to useContext Hook](https://github.com/cpetrescu96/react-101/tree/hook-use-context)
+* [Working with Forms - React Hook Form Overview](https://github.com/cpetrescu96/react-101/tree/react-hook-form)
+* [Introduction to React API: createPortal](https://github.com/cpetrescu96/react-101/tree/react-create-portal)
+* [Flux Guide in Pictures](https://github.com/cpetrescu96/react-101/tree/react-flux)
+* [Introduction to Redux](https://github.com/cpetrescu96/react-101/tree/redux-base)
+* [Introduction to Redux Toolkit (RTK)](https://github.com/cpetrescu96/react-101/tree/redux-toolkit-quick)
+* [Introduction to RTK Query](https://github.com/cpetrescu96/react-101/tree/rtk-query)
+* [New Features in Redux Toolkit 2.0](https://github.com/cpetrescu96/react-101/tree/redux-tollkit-2)
+* [Introduction to MobX](https://github.com/cpetrescu96/react-101/tree/mobx)
 
 <details>
-  <summary>Примеры приложений (деплой):</summary>
+  <summary>Example Applications (Deployment):</summary>
 
-- 🔗 [Приложение Todo App](https://todo-app-ab1e50.netlify.app)
-    - [form-components](https://github.com/shopot/react-101/tree/form-components)
-    - [hook-use-reducer](https://github.com/shopot/react-101/tree/hook-use-reducer)
-    - [hook-use-context](https://github.com/shopot/react-101/tree/hook-use-context)
-- 🔗 [Приложение React Roadmap (Accordion)](https://react-roadmap-ab1e50.netlify.app)
-    - [sharing-state](https://github.com/shopot/react-101/tree/chapter-10)
-- 🔗 [Приложение с примерами useEffect](https://react-use-effect-ab1e50.netlify.app)
-    - [hook-use-effect](https://github.com/shopot/react-101/tree/hook-use-effect)
-- 🔗 [Приложение React Quiz App](https://quiz-app-ab1e50.netlify.app)
-    - [react-quiz-app](https://github.com/shopot/react-101/tree/react-quiz-app)
-- 🔗 [Приложение Fetching Data](https://fetch-data-ab1e50.netlify.app)
-    - [fetching-data](https://github.com/shopot/react-101/tree/fetching-data)
-- 🔗 [Приложение с React Router](https://react-router-ab1e50.netlify.app)
-    - [react-routing](https://github.com/shopot/react-101/tree/react-routing)
-- 🔗 [Приложение с примерами useRef](https://react-useref-ab1e50.netlify.app)
-    - [hook-use-ref](https://github.com/shopot/react-101/tree/hook-use-ref)
-- 🔗 [Приложение с примерами React Hook Form](https://react-hook-form-ab1e50.netlify.app)
-    - [react-hook-form](https://github.com/shopot/react-101/tree/react-hook-form)
+- 🔗 [Todo App](https://todo-app-ab1e50.netlify.app)
+    - [form-components](https://github.com/cpetrescu96/react-101/tree/form-components)
+    - [hook-use-reducer](https://github.com/cpetrescu96/react-101/tree/hook-use-reducer)
+    - [hook-use-context](https://github.com/cpetrescu96/react-101/tree/hook-use-context)
+- 🔗 [React Roadmap App (Accordion)](https://react-roadmap-ab1e50.netlify.app)
+    - [sharing-state](https://github.com/cpetrescu96/react-101/tree/chapter-10)
+- 🔗 [App with useEffect Examples](https://react-use-effect-ab1e50.netlify.app)
+    - [hook-use-effect](https://github.com/cpetrescu96/react-101/tree/hook-use-effect)
+- 🔗 [React Quiz App](https://quiz-app-ab1e50.netlify.app)
+    - [react-quiz-app](https://github.com/cpetrescu96/react-101/tree/react-quiz-app)
+- 🔗 [Fetching Data App](https://fetch-data-ab1e50.netlify.app)
+    - [fetching-data](https://github.com/cpetrescu96/react-101/tree/fetching-data)
+- 🔗 [React Router App](https://react-router-ab1e50.netlify.app)
+    - [react-routing](https://github.com/cpetrescu96/react-101/tree/react-routing)
+- 🔗 [App with useRef Examples](https://react-useref-ab1e50.netlify.app)
+    - [hook-use-ref](https://github.com/cpetrescu96/react-101/tree/hook-use-ref)
+- 🔗 [App with React Hook Form Examples](https://react-hook-form-ab1e50.netlify.app)
+    - [react-hook-form](https://github.com/cpetrescu96/react-101/tree/react-hook-form)
 
 </details>
 
 <details>
   <summary>Information</summary>
 
-Для работы с примерами кода клонируйте репозиторий
+To work with code examples, clone the repository
 
 ```shell
-git clone https://github.com/shopot/react-101.git
+git clone https://github.com/cpetrescu96/react-101.git
 cd react-101
-```
 
-Выберите раздел на который вы хотите перейти (например redux-base)
+
+Choose the section you want to go to (for example redux-base)
 
 ```shell
 git checkout redux-base
 ```
 
-Установите зависимости
+Install dependencies
 
 ```shell
 npm install
 ```
 
-Запустите dev-сервер
+Run the dev server
 
 ```shell
 npm run dev
@@ -90,20 +86,15 @@ npm run dev
 
 ## 📚 React Testing
 
-* [Основы тестирования](https://github.com/shopot/react-101/tree/react-testing-01)
-* [Vitest: Установка и базовая настройка](https://github.com/shopot/react-101/tree/react-testing-02)
-* [Обзор React Testing Library](https://github.com/shopot/react-101/tree/react-testing-03)
-* [Обзор Mock Service Worker (MSW)](https://github.com/shopot/react-101/tree/react-testing-msw)
+* [Testing Basics](https://github.com/cpetrescu96/react-101/tree/react-testing-01)
+* [Vitest: Installation and Basic Setup](https://github.com/cpetrescu96/react-101/tree/react-testing-02)
+* [React Testing Library Overview](https://github.com/cpetrescu96/react-101/tree/react-testing-03)
+* [Mock Service Worker (MSW) Overview](https://github.com/cpetrescu96/react-101/tree/react-testing-msw)
 
-## 📚 React и TypeScript
+## 📚 React and TypeScript
 
-* [Конспект по TypeScript](https://github.com/shopot/react-101/blob/ts-notes/README.md)
+* [TypeScript Summary](https://github.com/cpetrescu96/react-101/blob/ts-notes/README.md)
 * [React TypeScript Cheatsheet](https://react-typescript-cheatsheet.netlify.app/docs/basic/getting-started/basic_type_example)
 
-## 📚 Архитектура и паттерны
-
-> Coming soon...
-
-## 📓️ Полезности
-
-- 🔗 [Соглашение о коммитах (conventionalcommits.org)](https://www.conventionalcommits.org/ru/v1.0.0/)
+## 📚 GIT
+- 🔗 [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/)
