@@ -1,52 +1,48 @@
-# Отрисовка элементов
+# Rendering Elements
 
-📚 Содержание
+📚 Table of Contents
 
-- [Элементы - это самые маленькие строительные блоки приложений React.](#элементы---это-самые-маленькие-строительные-блоки-приложений-react)
-- [Обновление отрисованного элемента](#обновление-отрисованного-элемента)
-- [Virtual DOM (виртуальное дерево объектов)](#virtual-dom-виртуальное-дерево-объектов)
-- [React UI tree](#react-ui-tree)
+- [Elements - the Smallest Building Blocks of React Applications](#elements---the-smallest-building-blocks-of-react-applications)
+- [Updating Rendered Element](#updating-rendered-element)
+- [Virtual DOM](#virtual-dom)
+- [React UI Tree](#react-ui-tree)
 
-### Элементы - это самые маленькие строительные блоки приложений React.
+### Elements - the Smallest Building Blocks of React Applications
 
-Элемент описывает, что вы хотите видеть на экране:
+An element describes what you want to see on the screen:
 
 ```jsx
 const element = <h1>Hello, world</h1>;
 ```
 
-В отличие от DOM-элементов браузера, элементы React это обычные объекты JavaScript. `React DOM` берёт заботу по
-обновлению DOM на себя для соответствия элементам React.
+Unlike browser DOM elements, React elements are plain JavaScript objects. \`React DOM\` takes care of updating the DOM to match the React elements.
 
-API-интерфейсы `react-dom/client` позволяют отображать компоненты React на клиенте (которые запускаются в среде DOM
-браузера). Эти API обычно используются на верхнем уровне вашего приложения для инициализации вашего дерева React.
+The \`react-dom/client\` API interfaces allow rendering React components on the client (which run in the browser DOM environment). These APIs are typically used at the top level of your application to initialize your React tree.
 
-Предположим, что в вашем файле HTML есть `<div>`:
+Suppose you have a \`<div>\` in your HTML file:
 
 ```jsx
 <div id="root"></div>
 ```
 
-Мы называем это «корневым» узлом DOM, потому что всё внутри него будет управляться `DOM React`.
+We call it the "root" DOM node because everything inside it will be managed by \`React DOM\`.
 
-Для отрисовки элемента React в корневом узле DOM необходимо сначала создать ReactDOMRoot объект для отображения
-компонента внутри DOM браузера:
+To render a React element into the root DOM node, you first need to create a ReactDOMRoot object for rendering the component inside the browser DOM:
 
 ```js
 const root = ReactDOM.createRoot(domNode, options ?);
 ```
 
-Метод `ReactDOM.createRoot()` возвращает объект типа `Root`
+The \`ReactDOM.createRoot()\` method returns an object of type \`Root\`:
 
 ```ts
 export interface Root {
   render(children: React.ReactNode): void;
-
   unmount(): void;
 }
 ```
 
-Который содержит метод `render()` для отображения части `JSX` элемента (`React node`) внутри узла DOM браузера:
+Which contains the \`render()\` method to render part of a \`JSX\` element (\`React node\`) inside the browser DOM node:
 
 ```js
 import { createRoot } from 'react-dom/client';
@@ -56,15 +52,13 @@ const root = createRoot(document.getElementById('root'));
 root.render(<h1>Hello, React!</h1>);
 ```
 
-**[⬆ Back to Top](#отрисовка-элементов)**
+**[⬆ Back to Top](#rendering-elements)**
 
-### Обновление отрисованного элемента
+### Updating Rendered Element
 
-React-элементы - неизменяемы (Immutable). Создав однажды элемент, вы не сможете изменить его дочерние элементы или
-атрибуты. Элемент похож на один кадр в фильме: он представляет собой пользовательский интерфейс в определённый момент
-времени.
+React elements are immutable. Once you create an element, you cannot change its children or attributes. An element is like a single frame in a movie: it represents the UI at a certain point in time.
 
-Единственный способ обновить интерфейс - создать новый элемент и передать его в метод `render()`.
+The only way to update the UI is to create a new element and pass it to the \`render()\` method.
 
 ```jsx
 import { createRoot } from 'react-dom/client';
@@ -74,8 +68,8 @@ const root = createRoot(document.getElementById('root'));
 const tick = () => {
   const element = (
     <div>
-      <h1>Привет, мир!</h1>
-      <h2>Сейчас {new Date().toLocaleTimeString()}.</h2>
+      <h1>Hello, world!</h1>
+      <h2>It is {new Date().toLocaleTimeString()}.</h2>
     </div>
   );
 
@@ -85,55 +79,45 @@ const tick = () => {
 setInterval(tick, 1000);
 ```
 
-DOM React сравнивает элемент и его дочерние элементы с предыдущими и применяет только обновления DOM, необходимые для
-преобразования DOM в желаемое состояние.
+React DOM compares the element and its children with the previous ones and applies only the DOM updates necessary to bring the DOM to the desired state.
 
-Несмотря на то, что мы создаём элемент, описывающий всё дерево пользовательского интерфейса на каждом тике, только
-текстовый узел, содержимое которого изменилось, обновляется в DOM React.
+Although we create an element describing the entire UI tree on each tick, only the text node whose content has changed is updated in the React DOM.
 
-<img src="./public/granular-dom-updates.gif">
+![Granular DOM Updates](./public/granular-dom-updates.gif)
 
-### Virtual DOM (виртуальное дерево объектов)
+### Virtual DOM
 
-Virtual DOM (виртуальное дерево объектов) - это концепция, используемая во фреймворках и библиотеках JavaScript.
+Virtual DOM is a concept used in JavaScript frameworks and libraries.
 
-Основная идея Virtual DOM заключается в том, что браузерное представление веб-страницы представлено в виде дерева
-объектов (DOM), и каждое изменение в этом дереве может привести к перерисовке всего представления страницы.
+The main idea of Virtual DOM is that the browser representation of a web page is represented as an object tree (DOM), and any change in this tree can lead to the re-rendering of the entire page view.
 
-<img src="./public/virtual-dom.webp">
+![Virtual DOM](./public/virtual-dom.webp)
 
-Виртуальный DOM является абстракцией на основе JavaScript, представляющей собой копию реального DOM в памяти. При
-изменении состояния приложения, виртуальный DOM сравнивается со старым состоянием, вычисляется разница и только те
-изменения, которые должны быть внесены в реальный DOM, применяются. Это позволяет существенно уменьшить количество
-перерисовок элементов страницы, часто ускоряет рендеринг страниц и повышает производительность приложения.
+The Virtual DOM is a JavaScript-based abstraction that represents a copy of the real DOM in memory. When the application state changes, the virtual DOM is compared with the old state, the difference is computed, and only the changes that need to be made to the real DOM are applied. This significantly reduces the number of element redraws on the page, often speeding up page rendering and improving application performance.
 
-Дополнительная информация:
+Additional Information:
 
 - 🔗 [React Fiber Architecture (2016)](https://github.com/acdlite/react-fiber-architecture)
 - 🔗 [React - Basic Theoretical Concepts (2016)](https://github.com/reactjs/react-basic)
 
-**[⬆ Back to Top](#отрисовка-элементов)**
+**[⬆ Back to Top](#rendering-elements)**
 
-### React UI tree
+### React UI Tree
 
-React использует древовидные структуры для управления и моделирования создаваемого вами пользовательского интерфейса.
-React создает `UI tree` из вашего JSX. Затем React DOM обновляет элементы DOM браузера, чтобы они соответствовали
-этому `UI tree`.
+React uses tree structures to manage and model the user interface you create. React creates a \`UI tree\` from your JSX. Then React DOM updates browser DOM elements to match this \`UI tree\`.
 
-<img src="./public/preserving_state_dom_tree.webp">
+![Preserving State DOM Tree](./public/preserving_state_dom_tree.webp)
 
-Для сравнения дерева элементов, React реализует эвристический алгоритм O(n), основанный на двух предположениях:
+To compare the tree of elements, React implements a heuristic O(n) algorithm based on two assumptions:
 
-- Разные типы компонентов предполагают генерацию существенно разных деревьев. React не будет пытаться сравнить их, а
-  просто заменит старое дерево полностью .
-- Различие списков производиться с использованием ключей (keys). Ключи должны быть «постоянными, предсказуемыми и
-  уникальными».
+- Different types of components are assumed to generate significantly different trees. React will not attempt to compare them but will simply replace the old tree entirely.
+- Differences in lists are made using keys. Keys must be "constant, predictable, and unique."
 
-На практике эти предположения справедливы практически для всех практических случаев использования.
+In practice, these assumptions hold true for almost all practical use cases.
 
-Документация по теме:
+Documentation:
 
-- 🔗 [Preserving and Resetting State - Описание работы алгоритма обновления Dom tree](https://react.dev/learn/preserving-and-resetting-state)
-- 📺 [Подробно о React Reconciliation, или Как React добился 60 fps](https://www.youtube.com/watch?v=NPXJnKytER4)
+- 🔗 [Preserving and Resetting State - Description of the Dom tree update algorithm](https://react.dev/learn/preserving-and-resetting-state)
+- 📺 [A Deep Dive into React Reconciliation, or How React Achieved 60 fps](https://www.youtube.com/watch?v=NPXJnKytER4)
 
-**[⬆ Back to Top](#отрисовка-элементов)**
+**[⬆ Back to Top](#rendering-elements)**
