@@ -1,34 +1,31 @@
-# Знакомство с JSX
+# Introduction to JSX
 
-📚 Содержание:
+📚 Table of Contents:
 
-- [JSX - это расширение языка JavaScript](#jsx---это-расширение-языка-javascript)
-- [Названия типов пользовательских компонентов должны начинаться с большой буквы](#названия-типов-пользовательских-компонентов-должны-начинаться-с-большой-буквы)
-- [Использование вложенных элементов в JSX](#использование-вложенных-элементов-в-jsx)
-- [Использование фрагментов <Fragment></Fragment>](#использование-фрагментов-fragmentfragment)
-- [Встраивание выражений в JSX](#встраивание-выражений-в-jsx)
-- [JSX имеет рекурсивную структуру](#jsx-имеет-рекурсивную-структуру)
-- [Логические значения, null и undefined игнорируются](#логические-значения-null-и-undefined-игнорируются)
-- [JSX предотвращает атаки, основанные на инъекции кода](#jsx-предотвращает-атаки-основанные-на-инъекции-кода)
+- [JSX - JavaScript Extension](#jsx---javascript-extension)
+- [Naming Conventions for Custom Components](#naming-conventions-for-custom-components)
+- [Using Nested Elements in JSX](#using-nested-elements-in-jsx)
+- [Using Fragments <Fragment></Fragment>](#using-fragments-fragmentfragment)
+- [Embedding Expressions in JSX](#embedding-expressions-in-jsx)
+- [JSX Has a Recursive Structure](#jsx-has-a-recursive-structure)
+- [Logical Values, null, and undefined are Ignored](#logical-values-null-and-undefined-are-ignored)
+- [JSX Prevents Code Injection Attacks](#jsx-prevents-code-injection-attacks)
 
-### JSX - это расширение языка JavaScript
+### JSX - JavaScript Extension
 
-**JSX** представляет способ описания визуального кода посредством комбинации кода на JavaScript и XML-подобного
-синтаксиса разметки, во время компиляции **JSX** транслируется в обычный JavaScript.
+**JSX** represents a way to describe visual code by combining JavaScript code and XML-like markup syntax. During compilation, **JSX** is translated into regular JavaScript.
 
-> JSX - это XML-подобное синтаксическое расширение ECMAScript без какой-либо определенной семантики. Он НЕ предназначен
-> для реализации в движках или браузерах. Он предназначен для использования различными препроцессорами (транспиляторами)
-> для преобразования этих токенов в стандартный ECMAScript.
+> JSX is an XML-like syntax extension to ECMAScript without any defined semantics. It is NOT intended to be implemented by engines or browsers. It is intended to be used by various preprocessors (transpilers) to transform these tokens into standard ECMAScript.
 
-Файлы JSX имеют расширение `.jsx` для JavaScript файлов и `.tsx` для файлов написанных на TypeScript.
+JSX files have the extension `.jsx` for JavaScript files and `.tsx` for TypeScript files.
 
-Главное отличие от HTML синтаксиса - это наличие закрывающегося (или самозакрывающегося) тега для всех элементов:
+The main difference from HTML syntax is the presence of a closing (or self-closing) tag for all elements:
 
 ```jsx
 <img src="..." alt="..." />
 ```
 
-Пример разметки JSX:
+Example JSX markup:
 
 ```jsx
 <header>
@@ -36,7 +33,7 @@
 </header>
 ```
 
-этот код **JSX**, после компиляции превратится в вызов `React.createElement()`:
+This **JSX** code, after compilation, will turn into a call to `React.createElement()`:
 
 ```javascript
 React.createElement(
@@ -46,57 +43,50 @@ React.createElement(
 );
 ```
 
-После компиляции каждое **JSX-выражение** становится обычным вызовом JavaScript-функции, результат которого - объект
-JavaScript.
+After compilation, each **JSX expression** becomes a regular JavaScript function call, the result of which is a JavaScript object.
 
-- Если тег пуст, то его можно сразу же закрыть с помощью `/>` точно так же, как и в XML;
-- Вместо атрибута `class` в **JSX** используется имя свойства в DOM: `className`, так как `class` - это
-  зарезервированное слово для создания классов;
-- Вместо атрибута `for` в **JSX** используется `htmlFor` для `<label>` и `<output>` для связывания с некоторым элементом
-  управления, так как `for` - это зарезервированное слово для создания циклов;
+- If the tag is empty, it can be closed immediately with `/>` just like in XML.
+- Instead of the `class` attribute in **JSX**, the DOM property name `className` is used, as `class` is a reserved word for creating classes.
+- Instead of the `for` attribute in **JSX**, `htmlFor` is used for `<label>` and `<output>` to bind to some control element, as `for` is a reserved word for creating loops.
 
 ```jsx
 <div className="sidebar" />;
 
-// Скомпилируется в:
+// Compiles to:
 React.createElement('div', {className: 'sidebar'});
 ```
 
 ```jsx
 const vdom = <img src={logo} className="app-logo" alt="logo" />;
 
-// Скомпилируется в:
+// Compiles to:
 React.createElement('img', {className: 'app-logo', src: '...', alt: 'logo'});
 ```
 
-**[⬆ Back to Top](#знакомство-с-jsx)**
+**[⬆ Back to Top](#introduction-to-jsx)**
 
-### Названия типов пользовательских компонентов должны начинаться с большой буквы
+### Naming Conventions for Custom Components
 
-Если название типа элемента начинается с маленькой буквы, он ссылается на встроенный компонент (HTML элемент), к
-примеру `<div>` или `<span>`, что в результате приведёт к тому, что в React.createElement будет передана строка 'div'
-или 'span'. Типы, начинающиеся с заглавной буквы, такие как `<Foo />`, компилируются в `React.createElement(Foo)` и
-соответствуют компоненту, который был объявлен или импортирован в вашем JavaScript-файле.
+If the name of the component type starts with a lowercase letter, it refers to a built-in component (HTML element), such as `<div>` or `<span>`, which will result in passing the string 'div' or 'span' to React.createElement. Types starting with an uppercase letter, such as `<Foo />`, compile to `React.createElement(Foo)` and correspond to a component that was declared or imported in your JavaScript file.
 
 ```jsx
-// Правильно! Это компонент и он должен быть записан с заглавной буквы:
+// Correct! This is a component and it should be written with an uppercase letter:
 const Hello = ({toWhat}) => {
-  // Правильно! Использование <div> разрешено, так как это валидный HTML-тег.
-  return <div>Привет, {toWhat}</div>;
+  // Correct! Using <div> is allowed, as it is a valid HTML tag.
+  return <div>Hello, {toWhat}</div>;
 };
 
 const HelloWorld = () => {
-  // Правильно! React знает, что <Hello /> это компонент,
-  // потому что он написан с заглавной буквы.
-  return <Hello toWhat="Мир" />;
+  // Correct! React knows that <Hello /> is a component because it's written with an uppercase letter.
+  return <Hello toWhat="World" />;
 };
 ```
 
-**[⬆ Back to Top](#знакомство-с-jsx)**
+**[⬆ Back to Top](#introduction-to-jsx)**
 
-### Использование вложенных элементов в JSX
+### Using Nested Elements in JSX
 
-Теги (элементы/компоненты) JSX могут содержать дочерние элементы
+JSX tags (elements/components) can contain child elements.
 
 ```jsx
 const element = (
@@ -106,7 +96,7 @@ const element = (
 );
 ```
 
-Все компоненты в React должны возвращать один корневой элемент, включающий в себя всё остальное:
+All components in React must return a single root element that includes everything else:
 
 ```jsx
 return (
@@ -116,7 +106,7 @@ return (
 );
 ```
 
-Чтобы отобразить вложенные React компоненты, можно указать несколько JSX-элементов в качестве дочерних.
+To render nested React components, you can specify multiple JSX elements as children.
 
 ```jsx
 <MyContainer>
@@ -125,7 +115,7 @@ return (
 </MyContainer>
 ```
 
-Вы можете смешивать различные типы потомков.
+You can mix different types of children.
 
 ```jsx
 <div className="container">
@@ -136,12 +126,11 @@ return (
 </div>
 ```
 
-**[⬆ Back to Top](#знакомство-с-jsx)**
+**[⬆ Back to Top](#introduction-to-jsx)**
 
-### Использование фрагментов `<Fragment></Fragment>`
+### Using Fragments `<Fragment></Fragment>`
 
-Для группировки нескольких элементов используется обертка в виде `<Fragment>`. Группировка элементов во фрагменте не
-влияет на результирующий DOM; это то же самое, как если бы элементы не были сгруппированы:
+To group multiple elements, you use a wrapper in the form of `<Fragment>`. Grouping elements in a fragment does not affect the resulting DOM; it's the same as if the elements were not grouped:
 
 ```jsx
 import { Fragment } from 'react';
@@ -156,7 +145,7 @@ const Post = () => {
 };
 ```
 
-Пустой тег `<></>` является сокращением `<Fragment></Fragment>`.
+An empty tag `<></>` is a shorthand for `<Fragment></Fragment>`.
 
 ```jsx
 const Post = () => {
@@ -169,14 +158,13 @@ const Post = () => {
 };
 ```
 
-Любой текст, записанный внутри тегов, остаётся просто статическим текстом на выводе.
+Any text written inside the tags remains just static text in the output.
 
-**[⬆ Back to Top](#знакомство-с-jsx)**
+**[⬆ Back to Top](#introduction-to-jsx)**
 
-### Встраивание выражений в JSX
+### Embedding Expressions in JSX
 
-Встраивание выражений в **JSX** осуществляется посредством фигурных скобок `{...}` (интерполяция, аналог как в
-JavaScript), внутрь которых мы можем поместить любое корректное выражение JavaScript:
+Embedding expressions in **JSX** is done using curly braces `{...}` (interpolation, similar to JavaScript), inside which we can place any valid JavaScript expression:
 
 ```jsx
 const name = 'Eva';
@@ -187,8 +175,7 @@ const vdom2 = <div>Hello, {name.repeat(3)}</div>;
 const vdom3 = <div className={someStyleClass}>Hello!</div>;
 ```
 
-**JSX-элементы** являются выражениями, то есть вы можете использовать их в любых местах JavaScript-кода, которые
-работают с выражениями:
+**JSX elements** are expressions, so you can use them anywhere in JavaScript code that works with expressions:
 
 ```jsx
 const isBlock = Math.random() > 0.5;
@@ -197,10 +184,9 @@ const name = 'Mike';
 const vdom = isBlock ? <div>hello, {name}</div> : <span>i am span</span>;
 ```
 
-### JSX имеет рекурсивную структуру
+### JSX Has a Recursive Structure
 
-Чтобы встроить выражение на JavaScript внутрь **JSX**, нужно использовать фигурные скобки. Следовательно, вы можете
-встроить **JSX** внутрь самого **JSX** при написании **JSX**:
+To embed a JavaScript expression inside **JSX**, use curly braces. Therefore, you can embed **JSX** inside **JSX** when writing **JSX**:
 
 ```jsx
 const vdom = (
@@ -217,27 +203,25 @@ const vdom = (
 );
 ```
 
-⚠️ Невозможность использовать условную конструкцию внутри JSX, в место нее можно использовать тернарную операцию к в
-примере выше.
+⚠️ Unable to use conditional constructs inside JSX; instead, you can use a ternary operation as shown above.
 
-Следующий код работать не будет, будет выброшено исключение с `Unexpected token`:
+The following code will not work and will throw an exception with `Unexpected token`:
 
 ```jsx
 <div id={if (isAdmin) {'msg'}}>Hello, React!</div>
 ```
 
-Переписанный код с использованием тернарного оператора:
+Rewritten code using the ternary operator:
 
 ```jsx
 <div id={isAdmin ? 'msg' : ''}>Hello, React!</div>
 ```
 
-**[⬆ Back to Top](#знакомство-с-jsx)**
+**[⬆ Back to Top](#introduction-to-jsx)**
 
-### Логические значения, null и undefined игнорируются
+### Logical Values, null, and undefined are Ignored
 
-Значения `false`, `null`, `undefined` и `true` - валидные дочерние пустые элементы. Просто они не рендерятся. 
-Эти **JSX-выражения** будут рендерить одно и то же:
+The values `false`, `null`, `undefined`, and `true` are valid empty child elements. They simply aren't rendered. These **JSX expressions** will render the same:
 
 ```jsx
 <div />
@@ -253,7 +237,7 @@ const vdom = (
 <div>{true}</div>
 ```
 
-Этот подход может быть полезным для рендера по условию
+This approach can be useful for conditional rendering.
 
 ```jsx
 <div>
@@ -261,70 +245,63 @@ const vdom = (
 </div>
 ```
 
-Есть один нюанс в том, что React будет рендерить «ложные» (falsy) значения, такие как число 0. Код ниже ведёт себя не
-так, как вы могли ожидать, так как 0 будет отображён, если массив props.messages пуст:
+There is one caveat in that React will render "falsy" (falsy) values, such as the number 0. The code below behaves differently than you might expect because 0 will be displayed if the props.messages array is empty:
 
 ```jsx
 <div>{props.messages.length && <MessageList messages={props.messages} />}</div>
 ```
 
-Чтобы исправить это, убедитесь что выражение перед оператором && всегда является boolean:
+To fix this, make sure the expression before the && operator is always a boolean:
 
 ```jsx
 <div>{props.messages.length > 0 && <MessageList messages={props.messages} />}</div>
 ```
 
-**[⬆ Back to Top](#знакомство-с-jsx)**
+**[⬆ Back to Top](#introduction-to-jsx)**
 
-### JSX предотвращает атаки, основанные на инъекции кода
+### JSX Prevents Code Injection Attacks
 
-По умолчанию React DOM экранирует все значения, включённые в JSX перед тем как отрендерить их. Это гарантирует, что вы
-никогда не внедрите чего-либо, что не было явно написано в вашем приложении.
+By default, React DOM escapes all values included in JSX before rendering them. This ensures that you never inject anything that wasn't explicitly written in your application.
 
 ```jsx
 const title = response.potentiallyMaliciousInput;
 
-// Этот код безопасен:
+// This code is safe:
 const element = <h1>{title}</h1>;
 ```
 
-#### Необработанные строки HTML
+#### Raw HTML Strings
 
-В JavaScript существует понятие `innerHTML`, которое позволяет задать HTML-содержимое элемента в формате строки.
+In JavaScript, there is the concept of `innerHTML`, which allows you to set the HTML content of an element as a string.
 
-В React для таких целей предусмотрен специальное свойство (property), которе передается в качестве
-атрибута - `dangerouslySetInnerHTML`. Это свойство позволяет вставить HTML в элемент таким образом:
+In React, there is a special property (property) for such purposes that is passed as an attribute - `dangerouslySetInnerHTML`. This property allows you to insert HTML into an element like this:
 
 ```jsx
 <div dangerouslySetInnerHTML={__html: '<p>some html</p>'} />
 ```
 
-⚠️ Использование dangerouslySetInnerHTML может представлять угрозу безопасности. Его использование открывает возможности
-для атак типа XSS, если вставляемый HTML-код не фильтруется и не обезвреживается.
+⚠️ Using dangerouslySetInnerHTML can pose a security threat. Its use opens up possibilities for XSS attacks if the inserted HTML code is not filtered and neutralized.
 
-`Название атрибута уже говорит о том, что его использование потенциально опасно`
+`The attribute name already indicates that its use is potentially dangerous`
 
-**[⬆ Back to Top](#знакомство-с-jsx)**
+**[⬆ Back to Top](#introduction-to-jsx)**
 
-#### Совет: используйте JSX-конвертер
+#### Tip: Use a JSX Converter
 
-Преобразование всех этих атрибутов в существующую разметку может быть утомительным! Разработчики React рекомендуют
-использовать [конвертер](https://transform.tools/html-to-jsx) для перевода существующего HTML и SVG в JSX. Конвертеры
-очень полезны на практике, но все же стоит понимать, что происходит, чтобы можно было комфортно писать JSX
-самостоятельно.
+Converting all these attributes into existing markup can be tedious! React developers recommend using a [converter](https://transform.tools/html-to-jsx) to translate existing HTML and SVG into JSX. Converters are very useful in practice, but it's still worth understanding what's going on so that you can comfortably write JSX yourself.
 
-### Итог
+### Summary
 
-- JSX предотвращает атаки, основанные на инъекции кода, это гарантирует что код будет безопасен.
-- Компоненты React группируют логику рендеринга вместе с разметкой, поскольку они связаны.
-- JSX похож на HTML, но с некоторыми отличиями. При необходимости вы можете использовать конвертер.
-- Сообщения об ошибках часто указывают вам правильное направление для исправления разметки.
+- JSX prevents code injection attacks, this ensures that the code is safe.
+- React components group rendering logic together with markup because they are related.
+- JSX is similar to HTML, but with some differences. If necessary, you can use a converter.
+- Error messages often point you in the right direction to fix your markup.
 
-Документация по теме:
+Related documentation:
 
 - 🔗 [JSX Introduction](https://facebook.github.io/jsx/)
 - 🔗 [Babel transform React JSX](https://babeljs.io/docs/babel-plugin-transform-react-jsx)
 - 🔗 [Writing Markup with JSX](https://react.dev/learn/writing-markup-with-jsx)
 - 🔗 [JavaScript in JSX with Curly Braces](https://react.dev/learn/javascript-in-jsx-with-curly-braces)
 
-**[⬆ Back to Top](#знакомство-с-jsx)**
+**[⬆ Back to Top](#introduction-to-jsx)**
