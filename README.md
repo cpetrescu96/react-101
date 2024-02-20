@@ -1,66 +1,66 @@
-# React DOM компоненты - компоненты форм
+# React DOM Components - Form Components
 
-React поддерживает все встроенные в браузер компоненты HTML и SVG.
+React supports all built-in HTML and SVG components.
 
-📚 Содержание:
+📚 Table of Contents:
 
-- [Что такое контролируемый компонент](#controlled-component)
-- [Компонент формы `<input>`](#компонент-формы-input)
-- [Компонент формы `<select>`](#компонент-формы-select)
-- [Компонент формы `<textarea>`](#компонент-формы-textarea)
-- [Challenge: Приложение `Todo App`](#challenge-приложение-todo-app)
+- [What is a Controlled Component](#controlled-component)
+- [Input Form Component `<input>`](#input-form-component)
+- [Select Form Component `<select>`](#select-form-component)
+- [Textarea Form Component `<textarea>`](#textarea-form-component)
+- [Challenge: Todo App Application](#challenge-todo-app-application)
 
 ### Controlled component
 
-Встроенные компоненты браузера `<input>`, `<select>` и `<textarea>`принимают вводимые пользователем данные. Это
-особенные компоненты в React, потому что передача им значения в виде атрибута (пропса) `value` делает их
-контролируемыми.
+Built-in browser components `<input>`, `<select>`, and `<textarea>` accept user input data. These are
+special components in React because passing them a value as a `value` attribute (prop) makes them
+controlled.
 
-💡 **Контролируемый компонент** (`Controlled component`) в React - это компонент, значение которого управляется React.
-Обычно это достигается через использование состояния (state), которое передается в виде пропсов (атрибутов), чтобы хранить значение
-компонента и обновлять его в соответствии с пользовательским вводом.
+💡 **Controlled Component** in React is a component whose value is controlled by React.
+This is usually achieved through the use of state, which is passed as props to store the value
+of the component and update it according to user input.
 
 ```jsx
 <input value={myInputValue} />
 ```
 
-_Здесь и дале по тексту `компонент формы` будет ссылаться на `элемент формы` и наоборот, он же `Встроенный в браузер
-компонент` или просто `компонент`._
+_Here and throughout the text, `form component` will refer to `form element` and vice versa, it is `Built-in browser
+component` or simply `component`._
 
-[⬆ Back to Top](#react-dom-компоненты---компоненты-форм)
+[⬆ Back to Top](#react-dom-components---form-components)
 
-## Компонент формы `<input>`
+## Input Form Component `<input>`
 
-Встроенный в браузер компонент (built-in browser component) `<input>` позволяет отображать и вводить различные типы
-входных данных формы.
+Built-in browser component `<input>` allows displaying and entering various types of
+form input data.
 
-💡 Встроенный в браузер компонент `<input>` поддерживает
-все [общие атрибуты элементов](https://react.dev/reference/react-dom/components/common#props).
+💡 Built-in browser component `<input>` supports
+all [common element attributes](https://react.dev/reference/react-dom/components/common#props).
 
 ```jsx
 <input name="myInput" />
 ```
 
-Вы можете сделать input управляемым, передав в него один из этих атрибутов (пропсов):
+You can make the input controlled by passing one of these attributes (props) to it:
 
-- `checked` - логическое значение. Для флажков `checkbox` и переключателей `radio button`, этот атрибут определяет,
-  помечен (выбран) ли заранее элемент.
-- `value` - строка. Управляет текстовым значением элемента. (Для переключателя `radio button` определяет данные формы).
+- `checked` - boolean value. For checkboxes `checkbox` and radio buttons `radio button`, this attribute determines
+  whether the element is preselected.
+- `value` - string. Controls the text value of the element. (For radio buttons, it defines form data).
 
-💡 При передаче любого атрибута `checked` или `value`, нужно так же передать обработчик события `onChange`, который
-,будет обновлять переданное значение (State).
+💡 When passing any `checked` or `value` attribute, you also need to pass an `onChange` event handler that
+, will update the passed value (State).
 
-Следующие атрибуты (пропсы) `<input>` актуальны только если компонент определен как неконтролируемый:
+The following `<input>` attributes (props) are relevant only if the component is defined as uncontrolled:
 
-- `defaultChecked`: логическое значение. Определяет начальное значение для флажков `type="checkbox"` и
-  переключателей `type="radio"`.
-- `defaultValue`: строка. Определяет начальное значение для текстового ввода.
+- `defaultChecked`: boolean value. Specifies the initial value for `type="checkbox"` checkboxes and
+  `type="radio"` radio buttons.
+- `defaultValue`: string. Specifies the initial value for text input.
 
-### Отображение `<input>` разных типов
+### Displaying `<input>` of different types
 
-Чтобы отобразить ввод, визуализируйте компонент `<input>`. По умолчанию это будет текстовый ввод `type="text"`. Вы
-можете передать `type="checkbox"` для флажка, `type="radio"` для переключателя или один из
-других [доступных типов](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#input_types).
+To display input, visualize the `<input>` component. By default, this will be a text input `type="text"`. You
+can pass `type="checkbox"` for a checkbox, `type="radio"` for a radio button, or one of
+other [available types](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#input_types).
 
 ```jsx
 export const MyForm = () => {
@@ -94,16 +94,16 @@ export const MyForm = () => {
 };
 ```
 
-### Создание метки `<label>` для элемента `<input>`
+### Creating a `<label>` tag for the `<input>` element
 
-Обычно каждый элемент `<input>` помещается внутри тега `<label>`. Это сообщает браузеру, что эта метка связана с этим
-вводом. Когда пользователь нажимает на метку, браузер автоматически фокусирует ввод. Это также важно для
-доступности (`Accessibility`): программа чтения с экрана объявляет заголовок метки, когда пользователь фокусирует
-соответствующий ввод.
+Usually, each `<input>` element is placed inside a `<label>` tag. This informs the browser that this label is associated with this
+input. When a user clicks on the label, the browser automatically focuses on the input. This is also important for
+accessibility (`Accessibility`): screen readers announce the label when the user focuses
+corresponding input.
 
-Если нет возможности вложить `<input>` в `<label>`, свяжите их, передав один и тот же идентификатор ()`id`)
-в `<input id>` и `<label htmlFor>`. Чтобы избежать конфликтов между несколькими экземплярами одного компонента,
-сгенерируйте такой идентификатор с помощью `React.useId()`.
+If it is not possible to nest `<input>` in `<label>`, link them by passing the same identifier (`id`)
+in `<input id>` and `<label htmlFor>`. To avoid conflicts between multiple instances of the same component,
+generate such an identifier using `React.useId()`.
 
 ```jsx
 import { useId } from 'react';
@@ -125,13 +125,13 @@ export const Form = () => {
 };
 ```
 
-### Установка начального значения для `<input>`
+### Setting initial value for `<input>`
 
-Можно указать начальное значение для любого элемента `<input>`. Достаточно передать его как строку в атрибут (
-пропс) `defaultValue` для текстового типа `<input>`.
+You can specify an initial value for any `<input>` element. Simply pass it as a string to the attribute (
+prop) `defaultValue` for text `<input>`.
 
-Для флажков `type="checkbox"` и переключателей `type="radio"` начальное значение указывается с помощью логического
-значения для атрибута (пропса) `defaultChecked`.
+For checkboxes `type="checkbox"` and radio buttons `type="radio"`, the initial value is specified using a boolean
+value for the `defaultChecked` attribute (prop).
 
 ```jsx
 export const MyForm = () => {
@@ -165,13 +165,13 @@ export const MyForm = () => {
 };
 ```
 
-### Чтение значений `<input>` при отправке формы
+### Reading `<input>` values on form submission
 
-💡 По умолчанию при отправке формы `<form>` через нажатие кнопки `<button type="submit">`, будет вызван обработчик
-событий `<form onSubmit>`, браузер отправит данные формы на текущий URL-адрес и обновит страницу.
+💡 By default, when submitting a `<form>` via a `<button type="submit">` click, the event handler `<form onSubmit>`
+will be called, the browser will submit the form data to the current URL, and refresh the page.
 
-Можно переопределить это поведение, вызвав `e.preventDefault()` и прочитать данные формы с
-помощью `new FormData(e.target)`.
+You can override this behavior by calling `e.preventDefault()` and read the form data with
+`new FormData(e.target)`.
 
 ```jsx
 export const MyForm = () => {
@@ -209,8 +209,8 @@ export const MyForm = () => {
 };
 ```
 
-Если дать имя каждому элементу формы, например `<input name="firstName" defaultValue="Taylor" />`, то указанное имя
-будет использоваться в качестве ключа в данных формы, например `{ firstName: "Taylor" }`.
+If you give a name to each form element, for example `<input name="firstName" defaultValue="Taylor" />`, then the specified name
+will be used as a key in the form data, for example `{ firstName: "Taylor" }`.
 
 ```jsx
 // Read the form data
@@ -220,44 +220,44 @@ const formData = new FormData(form);
 console.log(formData.firstName);
 ```
 
-💡 По умолчанию любая кнопка `<button>` внутри `<form>` делает ее отправку `<form onSubmit>`. Если вы создали
-пользовательский компонент React `<Button>`, то нужно предусмотреть возможность возврата `<button type="button">`
-вместо `<button>` без явного указания типа. Для кнопок, которые должны отправлять используйте
-используйте `<button type="submit">`, это определит порядок и четкие правила с явным указанием какая кнопка отвечает за
-отправку формы.
+💡 By default, any `<button>` inside `<form>` submits it `<form onSubmit>`. If you created
+a custom React `<Button>` component, you need to ensure it returns `<button type="button">`
+instead of `<button>` without explicitly specifying the type. For buttons that need to submit, use
+`<button type="submit">`, this will define the order and clear rules with an explicit indication of which button is responsible for
+submitting the form.
 
-### Управление `<input>` с помощью переменной состояния
+### Controlling `<input>` with State Variable
 
-По умолчанию компонент типа `<input />` неконтролируемый. Даже если вы передаете начальное значение,
-например `<input defaultValue="Initial text" />`, JSX указывает только начальное значение и потом уже никак не
-контролирует его.
+By default, the `<input />` component is uncontrolled. Even if you pass an initial value,
+for example `<input defaultValue="Initial text" />`, JSX only specifies the initial value and then no longer
+controls it.
 
-Чтобы выполнить рендер (визуализировать) контролируемого компонента типа `<input />`, ему нужно передать пропс (
-атрибут) `value` (или `checked` для флажков `type="checkbox"` и переключателей `type="radio"`). Тогда React будет всегда
-контролировать значение через переданный пропс `value`.
+To render a controlled `<input />` component, you need to pass the `value` prop (
+attribute) (or `checked` for checkboxes `type="checkbox"` and radio buttons `type="radio"`). Then React will always
+control the value via the passed `value` prop.
 
-Обычно это можно сделать, объявив переменную состояния через вызов хука `useState`:
+Usually, this can be done by declaring a state variable through the `useState` hook:
 
 ```jsx
 const MyForm = () => {
-  // Объявление переменной состояния
+  // Declare a state variable
   const [firstName, setFirstName] = useState('');
   // ...
 
-  // Связать значение input с переменной состояния
-  // ... и обновлять переменную состояния при любых изменениях!
+  // Bind input value to state variable
+  // ... and update the state variable on any changes!
   return <input value={firstName} onChange={(e) => setFirstName(e.target.value)} />;
 };
 ```
 
-💡 Значение, которое вы передаете управляемым компонентам, не должно быть `undefined` или `null`. Если вам нужно, чтобы
-начальное значение было пустым, то инициализируйте переменную состояния пустой строкой `useState('')` как в примере
-выше.
+💡 The value you pass to controlled components should not be `undefined` or `null`. If you need
+the initial value to be empty, initialize the state variable with an empty string `useState('')` as in the example
+above.
 
-💡 Если вы хотите управлять вводом при помощи переменной состояния, то вы должны обязательно передать обработчик
-событий `onChange`.
+💡 If you want to control input using state variable, you must always pass an event handler
+`onChange`.
 
-Примеры с `type="text"`
+Examples with `type="text"`
 
 ```jsx
 // ❌ Bug: controlled text input with no onChange handler
@@ -274,7 +274,7 @@ const MyForm = () => {
 
 ```
 
-Примеры с `type="checkbox"`
+Examples with `type="checkbox"`
 
 ```jsx
 // ✅ Good: uncontrolled checkbox with an initial value
@@ -287,7 +287,7 @@ const MyForm = () => {
 <input type="checkbox" checked={something} readOnly={true} />
 ```
 
-⚠️ Переменную состояния контролируемого компонента нельзя обновлять асинхронно.
+⚠️ The state variable of a controlled component cannot be updated asynchronously.
 
 ```jsx
 const handleChange = (e) => {
@@ -303,10 +303,10 @@ const handleChange = (e) => {
 };
 ```
 
-### Оптимизация повторного рендеринга при каждом нажатии клавиши
+### Optimizing re-rendering on each key press
 
-Когда вы используете контролируемый ввод, вы устанавливаете состояние при каждом нажатии клавиши. Если компонент,
-содержащий ваше состояние, повторно отображает большое дерево, это будет сказываться на производительности:
+When you use controlled input, you set the state on each key press. If the component containing your state re-renders
+large tree, this will affect performance:
 
 ```jsx
 const App = () => {
@@ -322,11 +322,9 @@ const App = () => {
   );
 };
 ```
+Updating the state triggered by the method from the `useState` hook leads to a re-render of the component and all its descendants.
 
-Обновление состояния вызванное методом из хука `useState` приводит к повторному рендеренгу компонента и всех его
-потомков.
-
-Поскольку `<PageContent />` не зависит от состояния ввода, то форму с вводом можно вынести в отдельный компонент:
+Since `<PageContent />` does not depend on the input state, the input form can be moved to a separate component:
 
 ```jsx
 // src/components/my-forms.jsx
@@ -350,15 +348,13 @@ const App = () => {
 };
 ```
 
-Это значительно повышает производительность, поскольку теперь при каждом нажатии клавиши перерисовывается только
-компонент `<MyForm />`. Еще один из методов оптимизации повторного рендеринга это использование
-хука [useDeferredValue](https://react.dev/reference/react/useDeferredValue#deferring-re-rendering-for-a-part-of-the-ui).
+This significantly improves performance because now, with each keystroke, only the `<MyForm />` component is redrawn. Another method of optimizing re-rendering is to use the [useDeferredValue](https://react.dev/reference/react/useDeferredValue#deferring-re-rendering-for-a-part-of-the-ui) hook.
 
-[⬆ Back to Top](#react-dom-компоненты---компоненты-форм)
+[⬆ Back to Top](#react-dom-components---form-components)
 
-## Компонент формы `<select>`
+## Select Form Component
 
-Встроенный в браузер компонент `<select>` позволяет отображать поле выбора с параметрами `<option>`.
+The built-in `<select>` component in the browser allows displaying a selection field with `<option>` parameters.
 
 ```jsx
 <select>
@@ -367,15 +363,14 @@ const App = () => {
 </select>
 ```
 
-Встроенный в браузер компонент `<select>` так же поддерживает все
-общие [атрибуты (пропсы) элементов](https://react.dev/reference/react-dom/components/common#props).
+The built-in `<select>` component also supports all
+common [attributes (props) of elements](https://react.dev/reference/react-dom/components/common#props).
 
-Компонент `<select>` можно сделать управляемым, передав переменную состояния в качестве значение в атрибут `value`.
+You can make the `<select>` component controlled by passing a state variable as the value in the `value` attribute.
 
-### Установка начального значения для `<seclect>`
+### Setting Initial Value for `<select>`
 
-По умолчанию браузер выберет первый `<option>` в списке. Чтобы выбрать другой параметр по умолчанию, передайте значение
-этого `<option>` как `defaultValue` элементу `<select>`.
+By default, the browser will select the first `<option>` in the list. To choose another option by default, pass the value of that `<option>` as `defaultValue` to the `<select>` element.
 
 ```jsx
 const FruitPicker = () => {
@@ -392,17 +387,16 @@ const FruitPicker = () => {
 }
 ```
 
-⚠️ В отличие от HTML, передача выбранного атрибута в отдельный `<option>` не поддерживается.
+⚠️ Unlike HTML, passing the selected attribute to a separate `<option>` is not supported.
 
-### Управление `<select>` с помощью переменной состояния
+### Controlling `<select>` with State Variable
 
-По умолчанию компонент `<select>`, не контролируется. Даже если передать в него изначально выбранное значение,
-например `<select defaultValue="orange">`.
+By default, the `<select>` component is uncontrolled. Even if you initially pass a selected value, for example `<select defaultValue="orange">`.
 
-⚠️ Передача значения для `defaultValue` не делает компонент формы контролируем.
+⚠️ Passing a value for `defaultValue` does not make the form component controlled.
 
-Чтобы сделать `<select>` контролируемым компонентом, передайте ему свойство `value`.
-Обычно это делается через объявление переменной состояния:
+To make the `<select>` a controlled component, pass the `value` property to it.
+This is usually done by declaring a state variable:
 
 ```jsx
 const FruitPicker = () => {
@@ -421,15 +415,11 @@ const FruitPicker = () => {
 };
 ```
 
-Когда вы передаете значение, вы также должны передать обработчик событий `onChange`, который будет обновлять переданное
-значение.
+When you pass a value, you must also pass an `onChange` event handler that will update the passed value.
 
-⚠️ Если при объявлении переменной состояния в `useState` аргументом будет передана пустая строка, то по умолчанию
-значение для переменной состояния будет отсутствовать, в элементе `<select>` будет выбран первый элемент `<option>` в
-списке. Такое поведение может вызвать нежелательные эффекты, если вы попытаетесь считать значение переменной состояния
-до того как произойдет первое изменение по событию `onChange`.
+⚠️ If you pass an empty string as an argument to `useState`, the default value for the state variable will be absent, and the first `<option>` element in the list will be selected in the `<select>` element by default. Such behavior can cause unwanted effects if you try to read the state variable value before the first change occurs due to the `onChange` event.
 
-Пример с повторным отображением некоторой части пользовательского интерфейса в ответ на каждый выбор:
+Example with re-displaying some part of the user interface in response to each choice:
 
 ```jsx
 import { useState } from 'react';
@@ -482,49 +472,43 @@ export const FruitPicker = () => {
 
 ```
 
-❌ Если вы передаете `value` без `onChange`, элемент `<select>` перестанет работать - значение `<option>` из списка
-выбрать будет невозможно.
+❌ If you pass `value` without `onChange`, the `<select>` element will stop working - it will be impossible to select a `<option>` from the list.
 
-💡Если вы делаете компонент управляемым при помощи передачи `value`, то вы так же должны передавать обработчик события
-в `onChange`.
+💡 If you make a component controlled by passing `value`, you must also pass an event handler to `onChange`.
 
-⚠️ В отличие от HTML, передача выбранного атрибута в отдельный `<option>` не поддерживается.
+⚠️ Unlike HTML, passing the selected attribute to a separate `<option>` is not supported.
 
-[⬆ Back to Top](#react-dom-компоненты---компоненты-форм)
+[⬆ Back to Top](#react-dom-components---form-components)
 
-## Компонент формы `<textarea>`
+## Textarea Form Component
 
-Встроенный в браузер компонент `<textarea>` позволяет отображать многострочный ввод текста.
+The built-in `<textarea>` component in the browser allows displaying multiline text input.
 
 ```jsx
 <textarea name="postContent" />
 ```
 
-Вы можете сделать `<textarea>` контролируемым, передав атрибут `value`:
+You can make `<textarea>` controlled by passing the `value` attribute:
 
-- `value`: Строка. Контролирует текст внутри текстовой области `<textarea>`.
+- `value`: String. Controls the text inside the `<textarea>`.
 
-⚠️ Если вы передаете атрибут `value`, вы должны так же передать обработчик событий `onChange` для обновления
-значения `value`.
+⚠️ If you pass the `value` attribute, you must also pass an `onChange` event handler to update the `value`.
 
-Если компонент `<textarea>` не контролируемый, то вы можете передать `defaultValue`:
+If `<textarea>` is uncontrolled, you can pass `defaultValue`:
 
-- `defaultValue`: строка. Определяет начальное значение для `<textarea>`.
+- `defaultValue`: string. Specifies the initial value for `<textarea>`.
 
-### ⚠️️ Предостережения
+### ⚠️️ Warnings
 
-- Передача дочерних элементов типа `<textarea>something</textarea>` не разрешена. Используйте `defaultValue` для
-  исходного содержимого.
-- Если `<textarea>` получает атрибут `value`, то компонент становится контролируемым.
-- Компонент `<textarea>` не может быть одновременно контролируемым и неконтролируемым.
-- Компонент `<textarea>` не может переключаться между контролируемым и неконтролируемым состоянием в течение своего
-  существования.
-- Каждому контролируемому `<textarea>` необходим обработчик событий `onChange`, который синхронно обновляет значение
-  переменной состояния.
+- Passing child elements like `<textarea>something</textarea>` is not allowed. Use `defaultValue` for initial content.
+- If `<textarea>` receives the `value` attribute, the component becomes controlled.
+- `<textarea>` cannot be both controlled and uncontrolled simultaneously.
+- `<textarea>` cannot switch between controlled and uncontrolled states during its existence.
+- Each controlled `<textarea>` requires an `onChange` event handler that synchronously updates the state variable value.
 
-### Установка начального значения для `<textarea>`
+### Setting Initial Value for `<textarea>`
 
-При желании вы можете указать начальное значение для `<textarea>`. Передайте его как строку для `defaultValue`.
+If desired, you can specify an initial value for `<textarea>`. Pass it as a string to the `defaultValue` attribute.
 
 ```jsx
 const EditPost = () => {
@@ -542,15 +526,13 @@ const EditPost = () => {
 };
 ```
 
-❌ В отличие от HTML, передача исходного текста, например `<textarea>Некоторый контент</textarea>`, не поддерживается.
+❌ Unlike HTML, passing initial text, for example `<textarea>Some content</textarea>`, is not supported.
 
-### Управление `<textarea>` с помощью переменной состояния
+### Controlling `<textarea>` with State Variable
 
-По умолчанию `<textarea>` неконтролируемый и передача начального значения в
-виде `<textarea defaultValue="Initial text" />` не делает его таковым.
+By default, `<textarea>` is uncontrolled, and passing an initial value as `<textarea defaultValue="Initial text" />` does not make it controlled.
 
-Чтобы визуализировать контролируемый компонент `<textarea>`, передайте ему атрибут `value`. Обычно это делается при
-помощи объявления переменной состояния:
+To visualize a controlled `<textarea>` component, pass the `value` attribute to it. This is usually done by declaring a state variable:
 
 ```jsx
 const NewPost = () => {
@@ -565,58 +547,55 @@ const NewPost = () => {
 };
 ```
 
-### Примеры использования `<textarea>`
+### Examples of using `<textarea>`
 
 ```jsx
-// ❌ Неправильно: в контролируемом компоненте отсутствует обработчик onChange
+// ❌ Incorrect: controlled component lacks onChange handler
 <textarea value={something} />
 
-// ✅ Правильно: неконтролируемый компонент с начальным значением
+// ✅ Correct: uncontrolled component with initial value
 <textarea defaultValue={something} />
 
-// ✅ Правильно: контролируемый компонент с value и onChange
+// ✅ Correct: controlled component with value and onChange
 <textarea value={something} onChange={e => setSomething(e.target.value)} />
 
-// ✅ Правильно: контролируемый компонент только для чтения без onChange
+// ✅ Correct: read-only controlled component without onChange
 <textarea value={something} readOnly={true} />
 ```
 
-### Сообщение об ошибке: “A component is changing an uncontrolled input to be controlled”
+### Error Message: “A component is changing an uncontrolled input to be controlled”
 
-Если вы предоставляете `value` компоненту, оно должно оставаться строкой на протяжении всего своего существования.
+If you provide `value` to the component, it must remain a string throughout its existence.
 
-Вы не можете сначала передать `value={undefined}`, а затем передать `value="some string"`, потому что React не будет
-знать,
-хотите ли вы, чтобы компонент был неконтролируемым или контролируемым. Управляемый компонент всегда должен получать
-значение `value` в виде строки, а не `null` или `undefined`.
+You cannot initially pass `value={undefined}` and then pass `value="some string"`, because React won't know whether you want the component to be uncontrolled or controlled. A controlled component must always receive the `value` as a string, not `null` or `undefined`.
 
-Если вы передаете значение `value` из API или переменной состояния, оно может быть инициализировано значением `null` или
-`undefined`. В этом случае либо изначально установите для него пустую строку (''), либо передайте
-`value={someValue ??  ''},` чтобы убедиться, что значение является строкой.
+If you pass the `value` from an API or state variable, it may be initialized as `null` or `undefined`. In this case, either initially set it to an empty string (''), or pass `value={someValue ??  ''}` to ensure the value is a string.
 
-[⬆ Back to Top](#react-dom-компоненты---компоненты-форм)
+[⬆ Back to Top](#react-dom-components---form-components)
 
-## Challenge: Приложение `Todo App`
+## Challenge: Todo App
 
-Напишите приложение Todo на основе полученных знаний из первых девяти разделов (_chapter-01...chapter-09_)
+Write a Todo application based on the knowledge gained from the first nine sections (_chapter-01...chapter-09_)
 
-- Приложение должно состоять минимум из трех компонентов:
-  - Список Todo;
-  - Todo как отдельный элемент списка;
-  - Форма для добавления Todo;
-- Форма для добавления Todo содержит управляемый компонент (элемент) `<input>` (использование useState внутри
-  компонента)
-- Форма для добавления Todo может содержать другие компоненты, общие для всего приложения (например `<Button />`)
-- Компонент `<App />` управляет компонентом формы и списка Todo (реализует бизнес логику для списка Todo)
-- Для хранения списка Todo используется переменная состояния (useState) в `<App />`
+- The application should consist of at least three components:
+  - Todo list;
+  - Todo as a separate list item;
+  - Form for adding Todo;
+- The form for adding Todo contains a controlled component (`<input>` element) (use `useState` inside the component)
+- The form for adding Todo may contain other components common to the entire application (e.g., `<Button />`)
+- The `<App />` component manages the form component and the Todo list (implements business logic for the Todo list)
+- Use a state variable (useState) in `<App />` to store the Todo list.
 
-🔗 [Ссылка на деплой приложения Todo App](https://todo-app-ab1e50.netlify.app/)
+// Your implementation of the Todo App goes here...
 
-![Todo App](./todo-app.png)
 
-Готовый пример с приложением находится в `src`.
+🔗 [Link to the deployed Todo App](https://todo-app-ab1e50.netlify.app/)
 
-Для запуска примера с готовым приложением выполните команды:
+Todo App
+
+The ready-made example with the application is located in src.
+
+To run the example with the ready-made application, execute the following commands:
 
 ```shell
 git clone https://github.com/shopot/react-101.git
@@ -636,5 +615,5 @@ npm run dev
 - 🔗 [Component `<textarea>`](https://react.dev/reference/react-dom/components/textarea)
 - 🔗 [useDeferredValue](https://react.dev/reference/react/useDeferredValue#deferring-re-rendering-for-a-part-of-the-ui)
 
-[⬆ Back to Top](#react-dom-компоненты---компоненты-форм)
+[⬆ Back to Top](#react-dom-components---form-components)
 
