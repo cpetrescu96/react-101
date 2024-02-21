@@ -1,21 +1,21 @@
-# Применение стилей CSS
+# Applying CSS Styles
 
-📚 Содержание
+📚 Contents
 
-- [Встроенные стили (Inline Styling)](#встроенные-стили-inline-styling)
-- [Использование классов CSS (внешние таблицы стилей)](#использование-классов-css-внешние-таблицы-стилей)
-- [Применение нескольких классов по условию](#применение-нескольких-классов-по-условию)
-- [Использование styled-components (CSS-in-JS)](#использование-styled-components-css-in-js)
-- [Использование CSS-Modules](#использование-css-modules)
-- [Использование препроцессоров CSS](#использование-препроцессоров-css)
-- [Использование Tailwind CSS](#использование-tailwind-css)
-- [Использование библиотек компонентов](#использование-библиотек-компонентов)
+- [Inline Styling](#inline-styling)
+- [Using CSS Classes (External Style Sheets)](#using-css-classes-external-style-sheets)
+- [Applying Multiple Classes Conditionally](#applying-multiple-classes-conditionally)
+- [Using styled-components (CSS-in-JS)](#using-styled-components-css-in-js)
+- [Using CSS Modules](#using-css-modules)
+- [Using CSS Preprocessors](#using-css-preprocessors)
+- [Using Tailwind CSS](#using-tailwind-css)
+- [Using Component Libraries](#using-component-libraries)
 
-В данном разделе представлен краткий обзор методов стилизации компонентов React.
+This section provides a brief overview of styling methods for React components.
 
-### Встроенные стили (Inline Styling)
+### Inline Styling
 
-Чтобы стилизовать элемент с помощью атрибута встроенного стиля, значение должно быть объектом JavaScript:
+To style an element using inline style attribute, the value must be a JavaScript object:
 
 ```jsx
 const container = {
@@ -27,34 +27,33 @@ const container = {
 return <div style={container}></div>;
 ```
 
-Атрибут `style` принимает JavaScript-объект со свойствами в `camelCase` вместо CSS-строк.
+The style attribute takes a JavaScript object with properties in camelCase instead of CSS strings.
 
-⛔ Использование атрибута `style` для оформления элементов не рекомендуется. Классы CSS обычно более производительны, чем
-встроенные стили.
+⛔ Using the style attribute for styling elements is not recommended. CSS classes are typically more performant than
+inline styles.
 
-[⬆ Back to Top](#применение-стилей-css)
+[⬆ Back to Top](#applying-css-styles)
 
-### Использование классов CSS (внешние таблицы стилей)
+### Using CSS Classes (External Style Sheets)
 
-Классический способ использования стилей - подключение их из внешних css-файлов. Класс CSS указывается как значение для
-атрибута с именем `className`. Он работает как обычный атрибут `class` в HTML.
+The classic way of applying styles is by linking them from external CSS files. A CSS class is specified as a value for
+the `className` attribute. It works like a regular `class` attribute in HTML.
 
 ```jsx
 return <img className="avatar" />;
 ```
 
-[⬆ Back to Top](#применение-стилей-css)
+[⬆ Back to Top](#applying-css-styles)
 
-### Применение нескольких классов по условию
+### Applying Multiple Classes Conditionally
 
-Чтобы условно применить классы CSS, вам необходимо самостоятельно создать строку `className` с помощью JavaScript.
+To conditionally apply CSS classes, you need to construct the `className` string yourself using JavaScript.
 
 ```jsx
 return <div className={'row ' + (isSelected ? 'selected' : '')}>...</div>;
 ```
 
-Чтобы сделать это более читабельным, можно использовать небольшую вспомогательную библиотеку,
-например [classnames](https://github.com/JedWatson/classnames):
+To make this more readable, you can use a small utility library like [classnames](https://github.com/JedWatson/classnames):
 
 ```jsx
 import cn from 'classnames';
@@ -64,7 +63,7 @@ const Row = ({isSelected}) => {
 };
 ```
 
-Это особенно удобно, если используется несколько условных классов:
+This is especially convenient when using multiple conditional classes:
 
 ```jsx
 import cn from 'classnames';
@@ -84,15 +83,16 @@ const Row = ({isSelected, size}) => {
 };
 ```
 
-[⬆ Back to Top](#применение-стилей-css)
+[⬆ Back to Top](#applying-css-styles)
 
-### Использование styled-components (CSS-in-JS)
+### Using styled-components (CSS-in-JS)
 
-Библиотека [styled-components](https://styled-components.com/) позволяет писать стили как обычный CSS-код, пользуясь при
-этом всеми преимуществами JavaScript. Это означает то, что вы можете использовать весь функционал CSS, даже такой как
-медиа запросы, псевдо-селекторы, вложения и т.п в JavaScript
+The [styled-components](https://styled-components.com/) library allows you to write styles like regular CSS, leveraging
+all the benefits of JavaScript. This means you can use the full power of CSS, including media queries, pseudo-selectors,
+nesting, etc., within JavaScript.
 
-Стили создаются прямо в файле компонента:
+Styles are created directly in the component file:
+ 
 
 ```jsx
 import styled from 'styled-components';
@@ -112,30 +112,27 @@ export const Homepage = () => {
 };
 ```
 
-👍 Плюсы
+👍 Pros
 
-- Стилизация на основе компонентов. Стили записываются внутри компонента, что улучшает организацию кода и возможность
-  повторного использования.
-- Динамическое оформление. Стилизованные компоненты обеспечивают динамическое оформление на основе свойств или состояния
-  компонента.
-- Гарантируют отсутствие конфликтов стилей, генерируя уникальные имена классов для ваших написанных стилей.
-- Поддерживают принцип DRY, предлагая отличные шаблоны для организации вашего кода, а стилизованные компоненты
-  совместимы с широким спектром фреймворков и библиотек.
-- Отлично подходят для разработки и поддержки дизайн систем.
+- Component-based styling. Styles are written inside the component, improving code organization and reusability.
+- Dynamic styling. Styled components provide dynamic styling based on component properties or state.
+- Ensures no style conflicts by generating unique class names for your written styles.
+- Supports DRY principle, offering excellent templates for organizing your code, and styled components are compatible
+  with a wide range of frameworks and libraries.
+- Great for building and maintaining design systems.
 
-👎 Минусы
+👎 Cons
 
-- Сложность сборки: решения CSS-in-JS часто требуют дополнительных инструментов сборки и зависимостей.
-- Влияние на производительность. Создание динамических стилей во время выполнения может повлиять на производительность
-  приложения.
+- Build complexity: CSS-in-JS solutions often require additional build tools and dependencies.
+- Performance impact. Generating dynamic styles at runtime can impact application performance.
 
-[⬆ Back to Top](#применение-стилей-css)
+[⬆ Back to Top](#applying-css-styles)
 
-### Использование CSS-Modules
+### Using CSS Modules
 
-CSS-модуль - это файл CSS, в котором все имена классов и имена анимаций по умолчанию ограничены локально, они
-компилируются в низкоуровневый формат обмена, называемый ICSS или Interoperable CSS, но записываются как обычные файлы
-CSS, автоматически создавая уникальное имя класса в формате `[имя файла]_[имя класса]_[хеш]`
+CSS Modules are CSS files in which all class names and animation names are scoped locally by default. They are compiled
+into a low-level interchange format called ICSS (Interoperable CSS), but written as regular CSS files, automatically
+creating a unique class name in the format `[filename]_[classname]_[hash]`.
 
 ```css
 /* message.module.css */
@@ -153,50 +150,45 @@ const Message = () => {
 };
 ```
 
-Инструмент [CRA](https://create-react-app.dev/) поддерживает модули CSS наряду с обычными таблицами стилей, используя
-соглашение об именовании файлов `[name].module.css` (CRA считается устаревшим).
+The [CRA](https://create-react-app.dev/) tool supports CSS modules alongside regular stylesheets
+using the `[name].module.css` naming convention (CRA is considered deprecated).
 
-Аналогичным образом осуществляется поддержка CSS-Modules
-инструментом [Vite](https://vitejs.dev/guide/features.html#css), для сборщика
-модулей [Webpack](https://webpack.js.org/loaders/css-loader/) требуется отдельная настройка.
+Similarly, CSS Modules support is available with the [Vite](https://vitejs.dev/guide/features.html#css) tool, while
+for the [Webpack](https://webpack.js.org/loaders/css-loader/) module bundler, specific configuration is required.
 
-👍 Плюсы
+👍 Pros
 
-- Изоляция на уровне компонента/модуля (в отличие от CSS/SASS)
-- Уникальные сгенерированные имена классов исключают конфликт стилей.
-- Можно использовать их сразу без настройки в проектах CRA/Vite.
-- Может использоваться с SASS/CSS.
+- Component/module-level isolation (unlike CSS/SASS)
+- Unique generated class names eliminate style conflicts.
+- Can be used right away without configuration in CRA/Vite projects.
+- Can be used with SASS/CSS.
 
-👎 Минусы
+👎 Cons
 
-- Может быть сложно ссылаться на имена классов
+- Referencing class names can be tricky.
 
-[⬆ Back to Top](#применение-стилей-css)
+[⬆ Back to Top](#applying-css-styles)
 
-### Использование препроцессоров CSS
+### Using CSS Preprocessors
 
-Препроцессоры CSS, такие как SASS, LESS или Stylus, предоставляют дополнительные функции, такие как переменные,
-вложение, примеси и многое другое. Это повышает производительность и удобство сопровождения CSS-кода.
+CSS preprocessors like SASS, LESS, or Stylus provide additional features such as variables, nesting, mixins, and more. This enhances the productivity and maintainability of CSS code.
 
-👍 Плюсы
+👍 Pros
 
-- Расширенные возможности: SCSS представляет мощные функции, которые упрощают написание CSS и управление им.
-- Возможность повторного использования кода: SCSS позволяет создавать повторно используемые фрагменты кода с
-  использованием примесей и переменных.
-- Простая миграция: существующие файлы CSS можно постепенно преобразовать в SCSS без значительного рефакторинга.
+- Enhanced capabilities: SCSS offers powerful features that simplify writing and managing CSS.
+- Code reusability: SCSS allows creating reusable code snippets using mixins and variables.
+- Easy migration: Existing CSS files can be gradually transformed into SCSS without significant refactoring.
 
-👎 Минусы
+👎 Cons
 
-- Шаг компиляции: файлы SCSS необходимо скомпилировать в обычный CSS, прежде чем их можно будет использовать.
-- Разработчики должны изучить синтаксис SCSS и его особенности.
+- Compilation step: SCSS files need to be compiled into regular CSS before they can be used.
+- Developers need to learn SCSS syntax and its peculiarities.
 
-[⬆ Back to Top](#применение-стилей-css)
+[⬆ Back to Top](#applying-css-styles)
 
-### Использование Tailwind CSS
+### Using Tailwind CSS
 
-[Tailwind CSS](https://tailwindcss.com/docs/installation) - это CSS-фреймворк, ориентированный на утилиты, который
-предлагает обширный набор предопределенных служебных классов. Это способствует быстрой разработке и единообразному
-стилю.
+[Tailwind CSS](https://tailwindcss.com/docs/installation) is a utility-first CSS framework that offers an extensive set of predefined utility classes. This facilitates rapid development and consistent styling.
 
 ```jsx
 export const MyComponent = () => {
@@ -214,70 +206,64 @@ export const MyComponent = () => {
 };
 ```
 
-👍 Плюсы
+👍 Pros
 
-- Быстрое прототипирование: Tailwind CSS предоставляет обширную коллекцию служебных классов, позволяющих быстро
-  разрабатывать пользовательский интерфейс.
-- Широкие возможности настройки. Платформа позволяет выполнять настройку с помощью файла конфигурации, обеспечивая
-  индивидуальный стиль.
-- Согласованный стиль. Используя предопределенные служебные классы, можно легко поддерживать согласованность стиля.
+- Rapid prototyping: Tailwind CSS provides an extensive collection of utility classes for quickly developing user interfaces.
+- Extensive customization capabilities: The platform allows customization through a configuration file, providing a unique style.
+- Consistent style: By using predefined utility classes, maintaining style consistency becomes easy.
 
-👎 Минусы
+👎 Cons
 
-- Размер файла: включение всей CSS-инфраструктуры Tailwind может привести к увеличению размера пакета.
-- Перегрузка классов. Чрезмерное использование служебных классов может привести к раздутию HTML-разметки.
+- File size: Including the entire Tailwind CSS infrastructure may increase the size of the application bundle.
+- Class overload: Excessive use of utility classes may lead to bloated HTML markup.
 
-[⬆ Back to Top](#применение-стилей-css)
+[⬆ Back to Top](#applying-css-styles)
 
-### Использование библиотек компонентов
+### Using Component Libraries
 
-Библиотеки компонентов, такие
-как [Chakra UI](https://chakra-ui.com), [Material UI](https://mui.com/material-ui/getting-started/)
-и [Ant Design](https://ant.design/) предлагают предварительно созданные и стилизованные компоненты React вместе с
-сопутствующими стилями. Эти библиотеки обеспечивают согласованный и связный язык проектирования пользовательского
-интерфейса.
+Component libraries like [Chakra UI](https://chakra-ui.com), [Material UI](https://mui.com/material-ui/getting-started/)
+and [Ant Design](https://ant.design/) offer pre-built and styled React components along with accompanying styles. 
+These libraries provide a consistent and cohesive design language.
 
-👍 Плюсы
+👍 Pros
 
-- Быстрая разработка: готовые к использованию компоненты ускоряют процесс разработки.
-- Согласованный стиль: компоненты в библиотеке соответствуют единой системе дизайна, обеспечивая визуальную
-  согласованность.
-- Обширная документация. Популярные библиотеки компонентов имеют хорошо документированные API и рекомендации.
+- Quick development: Ready-to-use components accelerate the development process.
+- Consistent style: Components in the library adhere to a unified design system, ensuring visual consistency.
+- Extensive documentation: Popular component libraries have well-documented APIs and recommendations.
 
-👎 Минусы
+👎 Cons
 
-- Ограничения настройки. Хотя эти библиотеки предлагают возможности настройки, они могут не соответствовать всем
-  требованиям дизайна.
-- Размер пакета. Включение всей библиотеки компонентов может увеличить размер пакета приложения.
+- Customization limitations: While these libraries offer customization options, they may not meet all design requirements.
+- Package size: Including the entire component library may increase the size of the application bundle.
 
-[⬆ Back to Top](#применение-стилей-css)
+[⬆ Back to Top](#applying-css-styles)
 
-### Итог
+### Conclusion
 
-Каждый вариант имеет свои сильные и слабые стороны, а выбор зависит от конкретных требований и предпочтений проекта.
+Each option has its strengths and weaknesses, and the choice depends on the specific requirements and preferences of the project.
 
-- Чистый CSS: подходит для небольших проектов или когда основное внимание уделяется настройке CSS. Он прост и знаком, но
-  ему не хватает инкапсуляции, что может привести к конфликтам имен классов в более крупных проектах.
-- CSS-Modules: идеально подходят для проектов среднего размера, требующих инкапсуляции стилей. Он предлагает стили с
-  ограниченной областью действия, предотвращает конфликты имен классов и создает импорт и ссылки на уникальные имена
-  классов.
-- CSS-in-JS: хорошо подходит для проектов со сложными или динамическими требованиями к стилю. Написание CSS
-  непосредственно в JavaScript предлагает стили на основе компонентов и возможности динамического стиля, но это может
-  увеличить размер пакета и требует дополнительного обучения.
-- Препроцессоры CSS: рекомендуются для проектов, в которых используется расширенный синтаксис CSS с переменными,
-  примесями и другими функциями. Они продвигают повторно используемые и поддерживаемые стили, но требуют процесса сборки
-  для компиляции.
-- Tailwind CSS: идеально подходит для быстрой разработки и прототипирования. Он предоставляет обширный набор служебных
-  классов для согласованного стиля, но из-за количества служебных классов может привести к большому размеру файла.
-- Библиотеки компонентов: полезно, когда вам нужны готовые к использованию компоненты пользовательского интерфейса с
-  согласованным дизайном и поддержкой тем. Они предлагают обширные библиотеки компонентов, но могут иметь ограниченные
-  возможности настройки и увеличивают размер итогового приложения.
+- Pure CSS: suitable for smaller projects or when the focus is on CSS customization. It is simple and familiar, but
+  it lacks encapsulation, which can lead to class name conflicts in larger projects.
+- CSS-Modules: ideal for medium-sized projects that require encapsulation of styles. It offers styles with
+  limited scope, prevents class name conflicts, and creates imports and references to unique class names
+  classes.
+- CSS-in-JS: well suited for projects with complex or dynamic style requirements. Writing CSS
+  directly in JavaScript offers component-based styles and dynamic styling capabilities, but it can
+  increase package size and requires additional training.
+- CSS preprocessors: recommended for projects that use advanced CSS syntax with variables,
+  impurities, and other features. They promote reusable and maintainable styles, but require a build process
+  for compilation.
+- Tailwind CSS: ideal for rapid development and prototyping. It provides an extensive set of service
+  classes for consistent styling, but due to the number of service classes can result in large file sizes.
+- Component libraries: useful when you need ready-to-use user interface components with a
+  consistent design and theme support. They offer extensive component libraries, but may have limited customization options and increase the size of the final file.
+  customization options and increase the size of the final application.
 
-Документация по теме:
+Documentation Resources:
 
 - 🔗 [Applying CSS styles](https://react.dev/reference/react-dom/components/common#applying-css-styles)
 - 🔗 [Injecting dynamic styles from CSS-in-JS libraries](https://react.dev/reference/react/useInsertionEffect#injecting-dynamic-styles-from-css-in-js-libraries)
 - 🔗 [styled-components](https://styled-components.com/docs)
 - 🔗 [CSS-Modules](https://github.com/css-modules/css-modules)
 
-[⬆ Back to Top](#применение-стилей-css)
+[⬆ Back to Top](#applying-css-styles)
