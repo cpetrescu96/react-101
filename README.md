@@ -123,7 +123,7 @@ A ready example with the application is located in `src`.
 To run the example with the ready application, execute the following commands:
 
 ```shell
-git clone https://github.com/shopot/react-101.git
+git clone https://github.com/cpetrescu96/react-101.git
 
 git checkout rendering-lists
 
