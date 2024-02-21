@@ -1,8 +1,8 @@
-# Списки и ключи - React Key Concepts
+# Lists and Keys - React Key Concepts
 
-Для отображения несколько похожих компонентов из коллекции данных (списки) следует использовать [методы массива JavaScript](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array), например такие как `map` и `filter`.
+To display multiple similar components from a data collection (lists), you should use [JavaScript array methods](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array) such as `map` and `filter`.
 
-Например имеется следующий список:
+For example, consider the following list:
 
 ```html
 <ul>
@@ -14,12 +14,12 @@
 </ul>
 ```
 
-💡 Единственная разница между элементами этого списка - это их содержимое и данные.
+💡 The only difference between the elements of this list is their content and data.
 
-Следующий пример демонстрирует как создать список элементов из массива при помощи `Array.prototype.map()`:
+The following example demonstrates how to create a list of elements from an array using `Array.prototype.map()`:
 
 ```jsx
-// Переместить данные в массив
+// Move data into an array
 const people = [
   'Creola Katherine Johnson: mathematician',
   'Mario José Molina-Pasquel Henríquez: chemist',
@@ -29,47 +29,47 @@ const people = [
 ];
 
 export const List = () => {
-  // Создать новый массив из JSX элементов (ReactNode) listItems
+  // Create a new array of JSX elements (ReactNode) listItems
   const listItems = people.map((person) => <li>{person}</li>);
 
-  // Вернуть listItems из компонента, обернутого в тег <ul>
+  // Return listItems from the component, wrapped in a <ul> tag
   return <ul>{listItems}</ul>;
 };
 ```
 
-Если выполнить данный код, то в консоли можно увидеть предупреждение о том, что каждый дочерний элемент массива или итератора должен иметь уникальный ключ:
+When you run this code, you may see a warning in the console stating that each child in a list should have a unique "key" prop:
 
 ```diff
 - Warning: Each child in a list should have a unique “key” prop.
 ```
 
-Данное предупреждение появляется, потому что при попытке рендеринга коллекции внутри компонента необходимо добавить ключ.
+This warning occurs because when attempting to render a collection inside a component, you need to add a key.
 
-В React уникальный ключ используется для того, чтобы определить, для каких компонентов в коллекции требуется повторный рендеринг.
+In React, a unique key is used to determine which components in the collection need to be re-rendered.
 
-Представьте, что файлы на вашем рабочем столе не имеют имен. Вместо этого вы будете обращаться к ним по порядку - первый файл, второй файл и так далее. К этому можно привыкнуть, но как только вы удалите файл, это приведет к путанице. Второй файл станет первым файлом, третий файл станет вторым файлом и так далее.
+Imagine files on your desktop without names. Instead, you would refer to them by order - the first file, the second file, and so on. This can work, but once you delete a file, it leads to confusion. The second file becomes the first file, the third file becomes the second file, and so on.
 
-Имена файлов в папке и ключи JSX в массиве служат той же цели. Они позволяют нам однозначно идентифицировать элемент между его соседями. Хорошо выбранный ключ предоставляет больше информации, чем позиция в массиве. Даже если позиция изменится из-за изменения порядка, ключ позволяет React идентифицировать элемент на протяжении всего его существования.
+File names in a folder and JSX keys in an array serve the same purpose. They allow us to uniquely identify an element among its siblings. A well-chosen key provides more information than position in the array. Even if the position changes due to order change, the key allows React to identify the element throughout its existence.
 
-💡 Добавление уникального ключа позволяет React не выполнять повторный рендеринг всей коллекции целиком при каждом обновлении и выполнить только обновление тех компонентов которые действительно были изменены.
+💡 Adding a unique key allows React to avoid re-rendering the entire collection every time an update occurs and only update the components that have actually changed.
 
-### Где взять ключ
+### Where to Get Keys
 
-Различные источники данных предоставляют разные источники ключей:
+Different data sources provide different sources of keys:
 
-- Если ваши данные поступают из базы данных, можно (нужно) использовать ключи/идентификаторы базы данных, которые уникальны по своей природе.
-- Если ваши данные генерируются и сохраняются локально (например, заметки в приложении для создания заметок), используйте увеличивающийся счетчик, `crypto.randomUUID()` или такой пакет, как `uuid`, при создании элементов.
+- If your data comes from a database, you should (must) use database keys/identifiers, which are unique by nature.
+- If your data is generated and stored locally (e.g., notes in a note-taking app), use an incrementing counter, `crypto.randomUUID()`, or a package like `uuid` when creating elements.
 
-### ⚠️ Правила для ключей
+### ⚠️ Rules for Keys
 
-- Ключи должны быть уникальными в пределах одной коллекции (массива). Однако можно использовать одни и те же ключи для узлов JSX в разных массивах.
-- Ключи не должны меняться, иначе это противоречит их назначению! Не генерируйте их во время рендеринга.
-- Избегайте использования индекса элемента в массиве в качестве его ключа. Такой индекс как ключ часто приводит к тонким и запутанным ошибкам.
+- Keys must be unique within a collection (array). However, you can use the same keys for JSX nodes in different arrays.
+- Keys should not change, as this contradicts their purpose! Do not generate them during rendering.
+- Avoid using the index of the array element as its key. Using such an index as a key often leads to subtle and confusing errors.
 
-Вместо того, чтобы генерировать ключи на лету, вам следует включить их в свои данные.
+Instead of generating keys on the fly, you should include them in your data.
 
 ```jsx
-// Массив данных где каждый элемент содержит уникальный идентификатор (id)
+// Array of data where each element contains a unique identifier (id)
 const people = [
   {
     id: 1, // Used in JSX as a key
@@ -99,7 +99,7 @@ const people = [
 ];
 
 export const List = () => {
-  // Создание списка из нескольких узлов DOM для каждого элемента
+  // Create a list of multiple DOM nodes for each element
   const listItems = people.map(({ id, name, profession }) => (
     <Fragment key={id}>
       <h1>{name}</h1>
@@ -107,20 +107,20 @@ export const List = () => {
     </Fragment>
   ));
 
-  // Вернуть listItems из компонента, обернутого в тег <ul>
+  // Return listItems from the component, wrapped in a <ul> tag
   return <ul>{listItems}</ul>;
 };
 ```
 
-Фрагменты исчезают из DOM, поэтому создается плоский список `<h1>`, `<p>`, `<h1>`, `<p>` и т. д.
+Fragments disappear from the DOM, so a flat list `<h1>`, `<p>`, `<h1>`, `<p>`, and so on is created.
 
-**[⬆ Back to Top](#списки-и-ключи---react-key-concepts)**
+**[⬆ Back to Top](#lists-and-keys---react-key-concepts)**
 
-Готовый пример с приложением находится в `src`.
+A ready example with the application is located in `src`.
 
 ![list-keys](./list-keys-app.png)
 
-Для запуска примера с готовым приложением выполните команды:
+To run the example with the ready application, execute the following commands:
 
 ```shell
 git clone https://github.com/shopot/react-101.git
@@ -132,8 +132,8 @@ npm install
 npm run dev
 ```
 
-Документация по теме:
+Documentation:
 
 - 🔗 [Rendering Lists (react.dev)](https://react.dev/learn/rendering-lists)
 
-**[⬆ Back to Top](#списки-и-ключи---react-key-concepts)**
+**[⬆ Back to Top](#lists-and-keys---react-key-concepts)**
