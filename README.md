@@ -1,32 +1,30 @@
-# Совместное использование состояния между компонентами
+# Sharing State Between Components
 
-📚 Содержание:
+📚 Table of Contents:
 
-- [Подъём состояния (Lifting state up)](#подъём-состояния-lifting-state-up)
-- [Подъём состояния на примере Accordion](#подъём-состояния-на-примере-accordion)
-- [Контролируемые и неконтролируемые компоненты](#контролируемые-и-неконтролируемые-компоненты)
-- [Prop drilling - проблема с передачей пропсов](#prop-drilling---проблема-с-передачей-пропсов)
-- [Приложение React Roadmap (Accordion)](#приложение-react-roadmap-accordion)
+- [Lifting state up](#lifting-state-up)
+- [Lifting state up using Accordion example](#lifting-state-up-using-accordion-example)
+- [Controlled and Uncontrolled Components](#controlled-and-uncontrolled-components)
+- [Prop drilling - passing props problem](#prop-drilling---passing-props-problem)
+- [React Roadmap App (Accordion)](#react-roadmap-app-accordion)
 
-### Подъём состояния (Lifting state up)
+### Lifting state up
 
-Иногда нужно, чтобы состояние двух компонентов всегда менялось одновременно. Для этого нужно удалить состояние из обоих
-компонентов и переместить состояние к их ближайшему общему родительскому компоненту, а затем состояние будет
-передаваться им в виде пропса (атрибута). Этот прием известен как ***Подъём состояния (Lifting state up)***, и это одна
-из самых
-распространенных вещей, которые вы будете делать при написании кода React.
+Sometimes you need the state of two components to always change simultaneously. To achieve this, remove the state
+from both components and move it to their nearest common parent component. Then the state will be passed to them as a prop. 
+This technique is known as **Lifting state up** and is one of the most common things you will do when writing React code.
 
-[⬆ Back to Top](#совместное-использование-состояния-между-компонентами)
+[⬆ Back to Top](#sharing-state-between-components)
 
-### Подъём состояния на примере Accordion
+### Lifting state up using Accordion example
 
-В этом примере родительский компонент `<Accordion />` отображает две отдельные панели:
+In this example, the parent component `<Accordion />` displays two separate panels:
 
 - `<Accordion />`
   - `<Panel />`
   - `<Panel />`
 
-Каждый компонент `Panel` имеет логическое состояние `isActive`, которое определяет, видимо ли его содержимое.
+Each `Panel` component has a logical state `isActive`, which determines whether its content is visible.
 
 ```jsx
 import { useState } from 'react';
@@ -56,16 +54,15 @@ export const Accordion = () => {
 };
 ```
 
-Но теперь предположим, что вы хотите изменить его так, чтобы в любой момент времени была открыта только одна панель. При
-таком дизайне открытие второй панели должно свернуть первую.
+But now suppose you want to change it so that only one panel is open at any given time. With this design, opening the second panel should collapse the first one.
 
-Чтобы скоординировать эти две панели, вам нужно «поднять их состояние» до родительского компонента в три этапа:
+To coordinate these two panels, you need to "lift their state" to the parent component in three steps:
 
-1. Удалить состояние из дочерних компонентов.
-2. Передать данные от общего родителя.
-3. Добавить состояние в общем родительском компоненте и передать его вместе с обработчиками событий.
+1. Remove the state from the child components.
+2. Pass data from the common parent.
+3. Add state to the common parent component and pass it along with event handlers.
 
-Это позволит компоненту `<Accordion />` координировать обе панели и открывать их только по одной.
+This allows the `<Accordion />` component to coordinate both panels and open them only one at a time.
 
 ```jsx
 import { useState } from 'react';
@@ -103,81 +100,67 @@ export const Accordion = () => {
 }
 ```
 
-На этом подъем состояния завершен!  Перемещение состояния в общий родительский компонент позволило скоординировать две
-панели. Использование активного индекса вместо двух флагов `«is shown»` гарантировало, что в данный момент времени
-активна
-только одна панель. А передача обработчика событий дочернему элементу позволила дочернему элементу изменить состояние
-родителя.
+With this state lifting completed! Moving the state to the common parent component allowed us to coordinate the two panels. 
+Using the active index instead of two "is shown" flags ensured that only one panel is active at any given time. 
+And passing event handlers to the child allowed the child to change the parent's state.
 
-[⬆ Back to Top](#совместное-использование-состояния-между-компонентами)
+[⬆ Back to Top](#sharing-state-between-components)
 
-### Контролируемые и неконтролируемые компоненты
+### Controlled and Uncontrolled Components
+A component with some local state is commonly referred to as `uncontrolled`. For example, the original `<Panel />` component 
+with the `isActive` state variable is uncontrolled because its parent component cannot influence whether the panel is active or not.
 
-Компонент ***с некоторым локальным состоянием*** принято называть `неконтролируемым`. Например, исходный
-компонент `<Panel />` с переменной состояния `isActive` не контролируется, поскольку его родительский компонент не может
-влиять на то, активна панель или нет.
+On the contrary, you can say that a component is `controlled` when its important information is managed through props rather than its own local state. 
+This allows the parent component to fully dictate the behavior of the child component, as in the last example, the `<Panel />` component 
+with the `isActive` prop is controlled by the `<Accordion />` component.
 
-Напротив, вы можете сказать, что компонент `контролируемый`, когда важная информация в нем управляется через пропсы, а
-не его собственным локальным состоянием. Это позволяет родительскому компоненту полностью определять поведение дочернего
-компонента, как в последнем примере, компонент `<Panel />` с пропсом `isActive` управляется компонентом `<Accordion />`.
+Similarly, when it comes to built-in browser components like `<input>`, passing the value prop makes it controlled, otherwise `<input>` will use its local state.
 
-Аналогично, если речь идет о встроенных компонентах браузера, например `<input>`, то передача пропса `value` делает его
-контролируемым, в противном случае `<input>` будет использовать свое локальное состояние.
+In practice, `controlled` and `uncontrolled` are not strict technical terms - each component usually has some combination of both local state and props.
 
-На практике `контролируемый` и `неконтролируемый` не являются строгими техническими терминами - каждый компонент обычно
-имеет некоторое сочетание как локального состояния, так и пропсов.
+[⬆ Back to Top](#sharing-state-between-components)
 
-[⬆ Back to Top](#совместное-использование-состояния-между-компонентами)
+### Prop drilling - passing props problem
+Props are data that components accept as arguments. They are passed from a parent component to a child component using attributes. 
+When a component contains multiple levels of nesting, passing data through all the components can become very cumbersome and cumbersome, 
+leading to a situation called Prop drilling.
 
-### Prop drilling - проблема с передачей пропсов
-
-Пропсы представляют собой данные, которые компоненты принимают в качестве аргументов. Они передаются от родительского
-компонента дочернему компоненту с помощью атрибутов. Когда компонент содержит несколько уровней вложенности, передача
-данных через все компоненты может стать очень неудобной и затруднительной задачей, это может привести к ситуации,
-называемой ***Prop drilling***.
-
-**Prop drilling** - это процесс передачи данных (пропсы) из одного компонента вложенного в другой компонент через
-несколько уровней вложенности. Это означает, что если необходимо передать данные от компонента A к компоненту D, и
-компоненты B, C находится между ними, то необходимо передать данные от A в B, а затем от B в C и затем от C в D.
+Prop drilling is the process of passing data (props) from one component nested inside another component through several levels of nesting. 
+This means that if you need to pass data from component A to component D, and components B, C are between them, 
+you need to pass data from A to B, then from B to C, and then from C to D.
 
 ![prop drilling](https://react.dev/_next/image?url=%2Fimages%2Fdocs%2Fdiagrams%2Fpassing_data_prop_drilling.dark.png&w=640&q=75)
 
-⚠️ **Prop drilling** может привести к тому, что код станет более сложным и трудно редактируемым. Кроме того, если пропсы
-нужно передавать через много компонентов, это может привести к проблемам c производительностью при рендеринге
-компонентов.
+⚠️ **Prop drilling** can lead to more complex and difficult-to-edit code. Moreover, if props need to be passed through many components, 
+this can lead to performance problems when rendering components.
 
-Для того чтобы избежать **Prop drilling**, в React используются более продвинутые концепции передачи данных, такие как
-контекст (Сontext) и библиотеки управление состоянием (state management), которые позволяют передавать данные между
-компонентами без использования пропсов и без необходимости выстраивания цепочки компонентов.
+To avoid **Prop drilling**, more advanced data transmission concepts are used in React, such as Context and state management libraries, 
+which allow data to be passed between components without using props and without the need to build a chain of components.
 
-💡 Принято считать, что если пропсы проходят через более чем три уровня вложенности, это может быть признаком того, что
-необходимо пересмотреть архитектуру компонентов.
+💡 It is generally considered that if props pass through more than three levels of nesting, this may be a sign that the component architecture needs to be reconsidered.
 
-[⬆ Back to Top](#совместное-использование-состояния-между-компонентами)
+[⬆ Back to Top](#sharing-state-between-components)
 
-### Итог
+### Conclusion
 
-- Если вы хотите скоординировать два компонента, переместите их состояние к их общему родительскому компоненту.
-- Затем передайте информацию через пропс (props) от их общего родителя.
-- Наконец, передайте обработчики событий из родительского компонента, чтобы дочерние компоненты могли изменить состояние
-  родительского компонента.
-- Полезно рассматривать компоненты как `«контролируемые»` (управляемые пропсами) или `«неуправляемые»` (управляемые
-  состоянием).
-- Для того чтобы избежать `prop drilling`, используйте более продвинутые концепции передачи данных, такие как `Context`
-  или библиотеки управления состоянием (state management), такие как `Redux` или `MobX`
+- If you want to coordinate two components, move their state to their common parent component.
+- Then pass the information through props from their common parent.
+- Finally, pass event handlers from the parent component so that child components can change the parent's state.
+- It is helpful to view components as `controlled` (prop-driven) or `uncontrolled` (state-driven).
+- To avoid `prop drilling`, use more advanced data transmission concepts such as `Context` or state management libraries like `Redux` or `MobX`.
 
-[⬆ Back to Top](#совместное-использование-состояния-между-компонентами)
+[⬆ Back to Top](#sharing-state-between-components)
 
-### Приложение React Roadmap (Accordion)
+### React Roadmap App (Accordion)
 
-🔗 [Ссылка на деплой приложения React Roadmap (Accordion)](https://react-roadmap-ab1e50.netlify.app/)
+🔗 [Link to the deployed React Roadmap App (Accordion)](https://react-roadmap-ab1e50.netlify.app/)
 
-Готовый пример с приложением находится в src раздела chapter-10.
+The completed example with the application is in the src section of chapter-10.
 
-Для запуска примера с готовым приложением выполните команды:
+To run the example with the finished application, run the following commands:
 
 ```shell
-git clone https://github.com/shopot/react-101.git
+git clone https://github.com/cpetrescu96/react-101.git
 
 git checkout sharing-state
 
@@ -186,9 +169,9 @@ npm install
 npm run dev
 ```
 
-Документация по теме:
+Documentation:
 
 - 🔗 [Sharing State Between Components](https://react.dev/learn/sharing-state-between-components)
 
-[⬆ Back to Top](#совместное-использование-состояния-между-компонентами)
+[⬆ Back to Top](#sharing-state-between-components)
 
