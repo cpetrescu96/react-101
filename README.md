@@ -1,48 +1,44 @@
-# Обработка событий
+# Event Handling
 
-📚 Содержание
+📚 Table of Contents
 
-- [Обработчики событий - это пользовательские функции](#обработчики-событий---это-пользовательские-функции)
-- [Добавление обработчиков событий](#добавление-обработчиков-событий)
-- [Чтение пропсов в обработчиках событий](#чтение-пропсов-в-обработчиках-событий)
-- [Передача обработчика событий в компонент](#передача-обработчика-событий-в-компонент)
-- [Именование обработчика событий передаваемого как props](#именование-обработчика-событий-передаваемого-как-props)
-- [Распространение событий (Event propagation)](#распространение-событий-event-propagation)
-- [Остановка распространения (Stopping propagation )](#остановка-распространения-stopping-propagation-)
-- [Предотвращение поведения по умолчанию](#предотвращение-поведения-по-умолчанию)
-- [Могут ли обработчики событий иметь побочные эффекты?](#могут-ли-обработчики-событий-иметь-побочные-эффекты)
+- [Event Handlers Are Custom Functions](#event-handlers-are-custom-functions)
+- [Adding Event Handlers](#adding-event-handlers)
+- [Reading Props in Event Handlers](#reading-props-in-event-handlers)
+- [Passing an Event Handler to a Component](#passing-an-event-handler-to-a-component)
+- [Naming Event Handler Passed as Props](#naming-event-handler-passed-as-props)
+- [Event Propagation](#event-propagation)
+- [Stopping Propagation](#stopping-propagation)
+- [Preventing Default Behavior](#preventing-default-behavior)
+- [Can Event Handlers Have Side Effects?](#can-event-handlers-have-side-effects)
 
-### Обработчики событий - это пользовательские функции
+### Event Handlers Are Custom Functions
 
-React позволяет добавлять обработчики событий в ваш JSX. Обработчики событий - это пользовательские функции, которые
-будут запускаться в ответ на такие взаимодействия, как щелчок, наведение курсора, фокусировка на вводе формы и т. д.
+React allows you to add event handlers to your JSX. Event handlers are custom functions that will be triggered in response to interactions such as clicks, mouse hover, form input focus, etc.
 
-Все обработчики событий получат объект события React. Его также иногда называют "синтетическим
-событием" (`Synthetic event`). Он соответствует тому же стандарту, что и базовые события DOM, но исправляет некоторые
-несоответствия браузера.
+All event handlers receive a React event object. It's also sometimes referred to as a "synthetic event". It conforms to the same standard as basic DOM events but fixes some browser inconsistencies.
 
-```ts
+```typescript
 // TypeScript declaration
-interface SyntheticEvent<T = Element, E = Event>
-  extends BaseSyntheticEvent<E, EventTarget & T, EventTarget> {
+interface SyntheticEvent<T = Element, E = Event> extends BaseSyntheticEvent<E, EventTarget & T, EventTarget> {
 }
 ```
 
-Если по какой-то причине нужно базовое событие DOM, его можно получить из `e.nativeEvent`.
+If for some reason you need the basic DOM event, you can get it from `e.nativeEvent`.
 
-Более подробную информацию об объекте можно найти на на странице официальной документации:
+More information about the event object can be found on the official documentation page:
 
 - 🔗 [React event object](https://react.dev/reference/react-dom/components/common#react-event-object)
 
-**[⬆ Back to Top](#обработка-событий)**
+**[⬆ Back to Top](#event-handling)**
 
-### Добавление обработчиков событий
+### Adding Event Handlers
 
-Простой сценарий добавления обработчика в компонент `Button`:
+A simple scenario of adding a handler to the Button component:
 
-- Объявить функцию `handleClick` внутри компонента `Button`.;
-- Реализовать логику внутри этой функции;
-- Добавить `onClick={handleClick}` в `<button>` JSX;
+Declare the `handleClick` function inside the `Button` component.
+Implement the logic inside this function.
+Add `onClick={handleClick}` to the <button> JSX.
 
 ```jsx
 export const Button = () => {
@@ -54,7 +50,7 @@ export const Button = () => {
 };
 ```
 
-Другой альтернативный способ определить обработчик событий, встроенный в JSX (не очень хорошая практика):
+Another alternative way to define an event handler inline in JSX (not a good practice):
 
 ```jsx
 // Function declaration
@@ -74,7 +70,7 @@ export const Button = () => {
 >
 ```
 
-💡 Функции, передаваемые обработчикам событий, должны передаваться, а не вызываться.
+💡 Functions passed to event handlers should be passed, not called.
 
 ```jsx
 // ❌ Calling a function incorrect
@@ -90,11 +86,11 @@ export const Button = () => {
 <button onClick={() => alert('...')}>...</button>
 ```
 
-**[⬆ Back to Top](#обработка-событий)**
+**[⬆ Back to Top](#event-handling)**
 
-### Чтение пропсов в обработчиках событий
+### Reading Props in Event Handlers
 
-Поскольку обработчики событий объявляются внутри компонента, они имеют доступ к свойствам компонента.
+Since event handlers are declared inside the component, they have access to the component's props.
 
 ```jsx
 // src/components/alert-button.jsx
@@ -117,11 +113,11 @@ export const Toolbar = () => {
 };
 ```
 
-**[⬆ Back to Top](#обработка-событий)**
+**[⬆ Back to Top](#event-handling)**
 
-### Передача обработчика событий в компонент
+### Passing an Event Handler to a Component
 
-Часто требуется, чтобы родительский компонент указал обработчик событий для своего дочернего компонента.
+Often, you need the parent component to specify an event handler for its child component.
 
 ```jsx
 // src/components/button.jsx
@@ -139,12 +135,11 @@ export const PlayButton = ({movieName}) => {
 };
 ```
 
-**[⬆ Back to Top](#обработка-событий)**
+**[⬆ Back to Top](#event-handling)**
 
-### Именование обработчика событий передаваемого как props
+### Naming Event Handler Passed as Props
 
-По соглашению (Naming convention) пропсы обработчика событий должны начинаться с `on`, за которым следует заглавная
-буква.
+By convention, event handler props should start with `on` followed by a capital letter.
 
 ```jsx
 // src/components/button.jsx
@@ -172,14 +167,13 @@ export const App = () => {
 };
 ```
 
-**[⬆ Back to Top](#обработка-событий)**
+**[⬆ Back to Top](#event-handling)**
 
-### Распространение событий (Event propagation)
+### Event Propagation
 
-Обработчики событий также будут перехватывать события от любых дочерних элементов вашего компонента.
+Event handlers will also catch events from any child elements of your component.
 
-Это значит что все события распространяются в React, за исключением `onScroll`, который работает только с тегом JSX, к
-которому он прикреплен.
+This means that all events bubble up in React except `onScroll`, which only works with the JSX tag it's attached to.
 
 ```jsx
 const Toolbar = () => {
@@ -196,11 +190,11 @@ const Toolbar = () => {
   );
 ```
 
-**[⬆ Back to Top](#обработка-событий)**
+**[⬆ Back to Top](#event-handling)**
 
-### Остановка распространения (Stopping propagation )
+### Stopping Propagation
 
-Если необходимо предотвратить попадание события в родительские компоненты, то нужно вызвать` e.stopPropagation()`:
+If you need to prevent an event from reaching parent components, you should call `e.stopPropagation()`:
 
 ```jsx
 const Button = ({onClick, children}) => {
@@ -217,14 +211,13 @@ const Button = ({onClick, children}) => {
 };
 ```
 
-**[⬆ Back to Top](#обработка-событий)**
+**[⬆ Back to Top](#event-handling)**
 
-### Предотвращение поведения по умолчанию
+### Preventing Default Behavior
 
-С некоторыми событиями браузера связано поведение по умолчанию. Например, событие отправки `<form>`, которое происходит
-при нажатии кнопки внутри него, по умолчанию перезагрузит всю страницу.
+Some browser events have default behaviors associated with them. For example, the form submission event `<form>`, which occurs when a button inside it is clicked, by default reloads the whole page.
 
-Чтобы этого не произошло, необходимо вызвать `e.preventDefault()` для объекта события.
+To prevent this from happening, call `e.preventDefault()` on the event object.
 
 ```jsx
 const Signup = () => {
@@ -242,37 +235,34 @@ const Signup = () => {
 };
 ```
 
-💡 Не путайте `e.stopPropagation()` и `e.preventDefault()`. Они оба полезны, но не связаны друг с другом:
+💡 Don't confuse `e.stopPropagation()` and `e.preventDefault()`. They are both useful but unrelated:
 
-- `e.stopPropagation()` останавливает срабатывание обработчиков событий, прикрепленных к тегам выше.
-- `e.preventDefault()` предотвращает поведение браузера по умолчанию для тех немногих событий, которые его имеют.
+- `e.stopPropagation()` stops event handlers attached to higher tags from firing.
+- `e.preventDefault()` prevents the default browser behavior for the few events that have it.
 
-**[⬆ Back to Top](#обработка-событий)**
+**[⬆ Back to Top](#event-handling)**
 
-### Могут ли обработчики событий иметь побочные эффекты?
+### Can Event Handlers Have Side Effects?
 
-Абсолютно! Обработчики событий - лучшее место для побочных эффектов.
+Absolutely! Event handlers are a great place for side effects.
 
-В отличие от функций рендеринга, обработчики событий не обязательно должны быть чистыми, поэтому это отличное место для
-того, чтобы что-то изменить - например, изменить значение ввода в ответ на ввод или изменить список в ответ на нажатие
-кнопки.
+Unlike rendering functions, event handlers don't necessarily need to be pure, so it's a great place to do something like alter a value in response to input or change a list in response to a button click.
 
-### Итог
+### Conclusion
 
-- Вы можете обрабатывать события, передавая функцию в качестве свойства элементу, например `<button>`;
-- Обработчики событий должны передаваться, а не вызываться! `onClick={handleClick}`, а не `onClick={handleClick()}`;
-- Вы можете определить функцию обработчика событий отдельно или встроенно.
-- Обработчики событий определяются внутри компонента, поэтому они могут получать доступ к реквизитам;
-- Вы можете объявить обработчик событий в родительском элементе и передать его в качестве свойства дочернему элементу;
-- Вы можете определить свои собственные пропсы (как обработчик событий) с именами, специфичными для приложения;
-- События распространяются вверх. Чтобы предотвратить это, вызовите `e.stopPropagation()` для первого аргумента;
-  = События могут иметь нежелательное поведение браузера по умолчанию. Вызовите `e.preventDefault()`, чтобы
-  предотвратить это;
-- Явный вызов пропса (как обработчик событий) из дочернего обработчика является хорошей альтернативой распространению;
+- You can handle events by passing a function as a property to an element, e.g., `<button>`;
+- Event handlers should be passed, not called! `onClick={handleClick}`, not `onClick={handleClick()}`;
+- You can define an event handler function separately or inline.
+- Event handlers are defined inside the component, so they can access props;
+- You can declare an event handler in a parent element and pass it as a property to a child element;
+- You can define your own props (like event handlers) with application-specific names;
+- Events bubble up. To prevent this, call `e.stopPropagation()` as the first argument;
+- Events can have unwanted default browser behavior. Call `e.preventDefault()` to prevent this;
+- Explicitly calling a prop (like an event handler) from a child handler is a good alternative to bubbling;
 
-Документация по теме:
+Documentation References:
 
 - 🔗 [Responding to Events](https://react.dev/learn/responding-to-events)
 - 🔗 [React event object](https://react.dev/reference/react-dom/components/common#react-event-object)
 
-**[⬆ Back to Top](#обработка-событий)**
+**[⬆ Back to Top](#event-handling)**
