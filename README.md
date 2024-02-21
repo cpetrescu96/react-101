@@ -1,130 +1,108 @@
-# Знакомство с хуком useEffect
+# Introduction to the useEffect Hook
 
-📚 Содержание:
+📚 Table of Contents:
 
-- [Жизненный цикл компонента в React](#жизненный-цикл-компонента-в-react)
-- [Что такое useEffect?](#что-такое-useeffect)
-- [Массив зависимостей useEffect](#массив-зависимостей-useeffect)
-- [Функция очистки useEffect (cleanup function)](#функция-очистки-useeffect-cleanup-function)
-- [Приложение с примерами useEffect из документации React](#приложение-с-примерами-useeffect-из-документации-react)
+- [Component Lifecycle in React](#component-lifecycle-in-react)
+- [What is useEffect?](#what-is-useeffect)
+- [Dependency Array in useEffect](#dependency-array-in-useeffect)
+- [Cleanup Function in useEffect](#cleanup-function-in-useeffect)
+- [Application with Examples of useEffect from React Documentation](#application-with-examples-of-useeffect-from-react-documentation)
 
-### Жизненный цикл компонента в React
+### Component Lifecycle in React
 
-Жизненный цикл компонента в React - это последовательность шагов и методов, которые вызываются в процессе создания,
-обновления и удаления компонента. Каждый компонент в React проходит через несколько этапов своей жизни, начиная с
-момента его создания и заканчивая удалением из DOM.
+The component lifecycle in React is a sequence of steps and methods that are invoked during the creation, update, and deletion of a component. Each component in React goes through several stages of its life, starting from its creation and ending with its removal from the DOM.
 
-Изначально до появления функциональных компонентов в React, жизненный цикл состоял из методов определенных в
-классовых компонентах (🔗 [подробнее о классовых компонентах](https://react.dev/reference/react/Component)).
+Originally, before the advent of functional components in React, the lifecycle consisted of methods defined in class components ([more about class components](https://react.dev/reference/react/Component)).
 
-В React 16.8 были представлены хуки для функциональных компонентов, позволяющие использовать состояние, хуки реализующие
-функционал жизненного цикла и другие возможности классовых компонентов.
+With the introduction of hooks for functional components in React 16.8, it became possible to use state, hooks implementing lifecycle functionality, and other features of class components.
 
-💡 В настоящее время классовые компоненты в React почти не используются, тем не менее вы все еще можете встретить старый
-код с реализацией на классовых компонентах
+💡 Currently, class components in React are almost not used, but you may still encounter old code implemented with class components.
 
-Для классовых компонентов жизненный цикл в упрощенном варианте будет выглядеть следующим образом:
+For class components, the lifecycle in simplified form looks as follows:
 
-- Если вы определите метод `componentDidMount()`, React вызовет его, когда ваш компонент будет
-  добавлен (mounted) на страницу.
-- React вызовет `componentDidUpdate()` после повторного рендеринга вашего компонента из-за изменения пропсов или
-  состояния.
-- React вызовет `componentWillUnmount()` после того, как ваш компонент будет удален (unmounted) со страницы.
+- If you define the method `componentDidMount()`, React will call it when your component is added (mounted) to the page.
+- React will call `componentDidUpdate()` after re-rendering your component due to changes in props or state.
+- React will call `componentWillUnmount()` after your component is removed (unmounted) from the page.
 
-Жизненный цикл для функциональных компонентов будет аналогичным:
+The lifecycle for functional components is similar:
 
-- Создание (Mounting) - компонент создается и добавляется на страницу.
-- Обновление (Updating) - компонент обновляется (повторный рендеринг) либо при получении новых пропсов (props), либо при
-  изменении внутреннего состояния (State).
-- Размонтирование (Unmounting) - компонент удаляется со страницы.
+- Mounting - the component is created and added to the page.
+- Updating - the component is updated (re-rendered) either when receiving new props or when internal state changes.
+- Unmounting - the component is removed from the page.
 
-Жизненный цикл для функциональных компонентов более простой, чем у классовых компонентов, для управления жизненным
-циклом функциональных компонентов можно использовать хуки такие как `useEffect`, `useState`, `useContext`, `useMemo`,
-etc., использование этих и других хуков будет влиять на поведение компонентов во время их жизни.
+The lifecycle for functional components is simpler than for class components. To manage the lifecycle of functional components, you can use hooks such as `useEffect`, `useState`, `useContext`, `useMemo`, etc. The use of these and other hooks affects the behavior of components during their lifetime.
 
-[⬆ Back to Top](#знакомство-с-хуком-useeffect)
+[⬆ Back to Top](#introduction-to-the-useeffect-hook)
 
-### Что такое useEffect?
+### What is useEffect?
 
-**useEffect** - это React Hook, который позволяет синхронизировать компонент с внешней системой.
+**useEffect** is a React Hook that allows synchronizing a component with an external system.
 
-Хук `useEffect` предназначен для управления побочными эффектами (side effects) в функциональных компонентах React. Под
-побочными эффектами понимаются любые внешние изменения, которые происходят в результате обновления компонента, такие как
-запросы к API, манипуляции с DOM-элементами, подписка и отписка на события и т.д, ниже представлен далеко не весь список
-случаев для использования хука `useEffect`:
+The `useEffect` hook is intended for managing side effects in React functional components. Side effects refer to any external changes that occur as a result of updating the component, such as API requests, DOM manipulation, subscribing and unsubscribing to events, etc. Below is not an exhaustive list of cases for using the `useEffect` hook:
 
-- Подключение к внешним системам, некоторым компонентам необходимо оставаться подключенными к сети, API браузера или
-  сторонней библиотеке, пока они отображаются на странице. Эти системы не контролируются React, поэтому они называются
-  внешними.
-- Выполнение запросов к серверу для получения некоторых данных  (Fetching data), например с помощью fetch или axios.
-  Запрос может быть выполнен один раз при загрузке компонента или при изменении определенной переменной состояния.
-- Подписка на события, например клики по кнопкам, скроллы или события клавиатуры.
-- Использование библиотек сторонних компаний, которые позволяют работать с различными видами данных не написанных на
-  React.
-- Прямое обновление DOM, например, для добавления или удаления элементов, или изменения их свойств.
-- Обертывание эффектов в пользовательские хуки, для отделения логики некоторых эффектов в
-  отдельные пользовательские хуки (повторное использование логики с помощью пользовательских хуков).
+- Connecting to external systems: some components need to remain connected to the network, the browser's API, or a third-party library while they are displayed on the page. These systems are not controlled by React and are therefore considered external.
+- Making server requests to fetch data, for example, using fetch or axios. The request can be made once when the component is loaded or when a specific state variable changes.
+- Subscribing to events, such as button clicks, scrolls, or keyboard events.
+- Using third-party library components that allow working with various types of data not written in React.
+- Directly updating the DOM, for example, adding or removing elements, or changing their properties.
+- Wrapping effects in custom hooks to separate the logic of some effects into separate custom hooks (reusing logic using custom hooks).
 
-[⬆ Back to Top](#знакомство-с-хуком-useeffect)
+[⬆ Back to Top](#introduction-to-the-useeffect-hook)
 
-### Массив зависимостей useEffect
+### Dependency Array in useEffect
 
-Декларация API хука `useEffect`  на момент написания материала выглядела следующим образом:
+The declaration of the `useEffect` hook API at the time of writing looked as follows:
 
 ```ts
 // TypeScript
 function useEffect(effect: EffectCallback, deps?: DependencyList): void;
 ```
 
-Определение `useEffect` в [официальной документации](https://react.dev/reference/react/useEffect) на момент написания
-материала:
+Definition of `useEffect` in the [official documentation](https://react.dev/reference/react/useEffect) at the time of writing:
 
 ```js
 useEffect(setup, dependencies ?)
 ```
 
-`useEffect` как и любой другой хук - это функция. Хук `useEffect` принимает два аргумента, последний не является
-обязательным:
+`useEffect`, like any other hook, is a function. The useEffect hook takes two arguments, the last one is not mandatory:
 
-- `setup` (или setup function) - это функция обратного вызова с реализацией логики вашего эффекта, внутри которой
-  происходит работа с обновленными данными (здесь и далее будет упоминаться как `setup function`). Эта функция может
-  вернуть другую функцию, которая называется функцией очистки (сleanup function), внутри которой происходит работа с
-  данными до обновления.
-- `dependencies` - это массив зависимостей, который может включать в себя пропсы, состояние и все переменные и функции,
-  объявленные непосредственно внутри тела вашего компонента.
+- `setup` (or setup function) - is a callback function with the implementation of your effect's logic, 
+  inside which you work with updated data (referred to here and below as the setup function). 
+  This function can return another function, called a cleanup function, inside which you work with data before the update.
+- `dependencies` - this is an array of dependencies that can include props, state, 
+  and all variables and functions declared directly inside your component body.
 
-💡 В React, хук `useEffect` срабатывает после рендеринга компонента, то есть когда компонент отрендерился и фактически
-появился на экране.
+💡 In React, the `useEffect` hook is triggered after the component is rendered, that is, when the component is rendered and actually
+appeared on the screen.
 
-Таким образом `setup function` в `useEffect` срабатывает после того, как компонент обновлен на экране. Если вы хотите
-выполнить какую-то логику до первого рендеринга компонента, например, отправить запрос на сервер и получить данные, вы
-можете передать вторым аргументом в `useEffect` пустой массив. Это сообщает React, что `setup function` должна быть
-выполнена только один раз во время первого монтирования компонента, что можно сравнить с методом классового
-компонента `componentDidMount()`.
+So the `setup function` in `useEffect` is triggered after the component is updated on the screen. If you want to
+execute some logic before the component is first rendered, such as sending a request to the server and retrieving data, you
+can pass an empty array as the second argument to `useEffect`. This tells React that the `setup function` should be
+executed only once during the first mount of the component, which can be compared to the class component method `componentDid`.
+component `componentDidMount()` method.
 
 ```jsx
-// Монтирование (Mounting)
+// Mounting
 useEffect(() => {
-  // Этот код будет выполнен при монтировании компонента
+  // This code will be executed when the component is mounted
   //...
 }, []);
 ```
 
-Если вы не передадите второй аргумент, то  `setup function` будет срабатывать снова при каждой визуализации компонента,
-что можно сравнить с методом классового компонента `componentDidUpdate()`, то есть выполнение логики в `setup function`
-будет срабатывать после каждого повторного рендиринга компонента.
+If you do not pass the second argument, the `setup function` will be triggered again every time the component is visualized, 
+which can be compared to the `componentDidUpdate()` method of a class component. That is, executing logic in the `setup function` 
+will occur after each re-rendering of the component.
 
 ```jsx
-// Обновление (Updating)
+// Updating
 useEffect(() => {
-  // Этот код будет выполнен после каждого ренедеринга компонента
+  // This code will be executed after each rendering of the component
   //...
 });
 ```
 
-Если вы передадите пропсы или переменные состояния во втором аргументе, то логика `setup function` будет выполняться
-только при изменении значений пропсов или переменной состояния, каждый раз когда пропсы или переменные состояния будут
-меняться.
+If you pass props or state variables as the second argument, the `setup function` logic will be executed only when the values 
+of the props or state variables change, each time the props or state variables change.
 
 ```jsx
 import { useEffect, useState } from 'react';
@@ -133,88 +111,88 @@ const MyComponent = ({someProp}) => {
   const [someState, setSomeState] = useState('Apple');
 
   useEffect(() => {
-    // Этот код будет выполнен только при изменении просов или состояния
+    // This code will be executed only when the props or state change
   }, [someProp, someState]);
 };
 ```
 
-💡 Реализация useEffect использует поверхностное (shallow) сравнение значений зависимостей.
+💡 The implementation of useEffect uses shallow comparison of dependency values.
 
-### Функция очистки useEffect (cleanup function)
+### UseEffect cleanup function (cleanup function)
 
-После каждого повторного рендеринга с измененными зависимостями React сначала запускает функцию очистки (если вы ее
-предоставили) со старыми значениями, а затем запускает `setup function` с новыми значениями. После того, как ваш
-компонент будет удален из DOM, React то же запустит функцию очистки (`cleanup function`).
+After each re-rendering with changed dependencies, React first runs the cleanup function (if you have
+provided) with the old values, and then runs the `setup function` with the new values. After your
+component is removed from the DOM, React will also run the `cleanup function`.
 
 ```jsx
-// Размонтирование
+// Unmounting
 useEffect(() => {
   // ...
   return () => {
-    // Этот код будет выполнен при размонтировании компонента
+    // This code will be executed when the component is unmounted
   }
 });
 ```
 
-Если вы передадите пропсы или переменные состояния во втором аргументе, то логика `cleanup function` будет выполнена
-каждый раз при обновлении любого из элементов массива зависимостей, а так же один раз при размонтировании компонента:
+If you pass props or state variables in the second argument, the `cleanup function` logic will be executed
+each time any of the dependency array elements are updated, and once when the component is unmounted:
 
 ```jsx
-// Размонтирование и обновление
+// Unmounting and updating
 useEffect(() => {
   // ...
   return () => {
-    // Этот код будет выполнен при размонтировании компонента
-    // а также до обновления любого элемента из массива зависимостей
+    // This code will be executed when the component is unmounted
+    // and also before updating any element from the dependency array
   }
 }, [dep1, dep2]);
 ```
 
-#### ⚠️ Предостережения
+#### ⚠️ Caveats
 
-- `useEffect` не является полной заменой для методов жизненного цикла классовых компонентов, он лишь частично
-  реализует похожий функционал.
-- `useEffect` - это хук, поэтому вы можете вызывать его только на верхнем уровне вашего компонента или собственных
-  хуков.
-  Вы не можете вызывать его внутри циклов или условий.
-- Если вы не пытаетесь синхронизироваться с какой-либо внешней системой, вам, вероятно, не нужен эффект.
-- Когда строгий режим включен (`<React.StrictMode>`), React запустит один дополнительный
-  цикл `setup function` + `cleanup function` только для режима разработки. Это стресс-тест, который гарантирует, что
-  ваша логика `cleanup function` «отражает» вашу логику `setup function` и что она останавливает или отменяет все, что
-  делает `setup function`.
-- Если некоторые из ваших зависимостей являются объектами или функциями, определенными внутри компонента, существует
-  риск того, что они приведут к повторному запуску `useEffect` чаще, чем необходимо. Чтобы это исправить, удалите
-  ненужные
-  зависимости объектов и функций.
-- Если ваш эффект не был вызван взаимодействием (например, щелчком мыши), React позволит браузеру сначала отрисовать
-  обновленный экран, прежде чем запускать ваш эффект. Если ваш Эффект выполняет что-то визуальное (например,
-  позиционирует всплывающую подсказку), а задержка заметна (например, мерцает), замените `useEffect`
-  на `useLayoutEffect`.
-- Даже если ваш эффект был вызван взаимодействием (например, щелчком мыши), браузер может перерисовать экран перед
-  обработкой обновлений состояния внутри вашего эффекта. Обычно это то, чего вы хотите. Однако если вам необходимо
-  запретить браузеру перерисовывать экран, вам необходимо заменить `useEffect` на `useLayoutEffect`.
-- Эффекты работают только на клиенте. Они не запускаются во время рендеринга на сервере.
+- `useEffect` is not a complete replacement for class component lifecycle methods, it only partially
+  it only partially implements similar functionality.
+- `useEffect` is a hook, so you can only call it at the top level of your component or your own
+  hooks.
+  You cannot call it inside loops or conditions.
+- Unless you are trying to synchronize with some external system, you probably don't need the effect.
+- When strict mode is enabled (`<React.StrictMode>`), React will run one extra
+  `setup function` + `cleanup function` loop for development mode only. This is a stress test to ensure that
+  your `cleanup function` logic "reflects" your `setup function` logic, and that it stops or undoes everything that `setup function`
+  `setup function` does.
+- If some of your dependencies are objects or functions defined within a component, there is a
+  risk that they will cause `useEffect` to be rerun more often than necessary. To fix this, remove
+  unnecessary
+  object and function dependencies.
+- If your effect was not triggered by an interaction (such as a mouse click), React will allow the browser to first render the
+  an updated screen before triggering your Effect. If your Effect does something visual (e.g,
+  positions a tooltip) and the delay is noticeable (e.g., flickering), replace `useEffect`
+  with `useLayoutEffect`.
+- Even if your effect was caused by an interaction (e.g., a mouse click), the browser may redraw the screen before
+  handling state updates within your effect. This is usually what you want to do. However, if you need to
+  to prevent the browser from redrawing the screen, you need to replace `useEffect` with `useLayoutEffect`.
+- The effects only run on the client. They do not run during rendering on the server.
 
-### Итог
+### Conclusion
 
-- Функция обратного вызова (setup function) будет выполняться после каждой визуализации, если нет массива зависимостей.
-- Если есть пустой массив зависимостей, функция обратного вызова (setup function) будет запущена только один раз после
-  первой визуализации, при монтировании компонента.
-- Если есть массив зависимостей со значениями в виде пропсов (props) или переменной состояния, функция обратного вызова
-  (setup function) будет выполняться только при изменении этих значений.
+- The setup function will be executed after each visualization if there is no dependency array.
+- If there is an empty array of dependencies, the setup function will run only once after the first visualization, when the component is mounted.
+  the first visualization, when the component is mounted.
+- If there is a dependency array with values in the form of props or a state variable, the callback function (setup function) will be executed only once after the first visualization.
+  (setup function) will be executed only when these values are changed.
 
-[⬆ Back to Top](#знакомство-с-хуком-useeffect)
+[⬆ Back to Top](#introduction-to-the-useeffect-hook)
 
-### Приложение с примерами useEffect из документации React
+### Application with useEffect examples from React documentation
 
-🔗 [Ссылка на деплой приложения с React useEffect()](https://react-use-effect-ab1e50.netlify.app/)
+🔗 [React useEffect() application deploy link](https://react-use-effect-ab1e50.netlify.app/)
 
-Готовый пример с приложением находится в `src`.
+The ready example with the application is in `src`.
 
-Для запуска примера с готовым приложением выполните команды:
+To run the example with the ready application, run the commands:
 
 ```shell
-git clone https://github.com/shopot/react-101.git
+git clone https://github.com/cpetrescu96/react-101.git
 
 git checkout hook-use-effect
 
@@ -223,12 +201,12 @@ npm install
 npm run dev
 ```
 
-Документация по теме:
+Documentation:
 
 - 🔗 [React Hook useEffect](https://react.dev/reference/react/useEffect)
-- 🔗 [Описание классовых компонентов (React Legacy APIs)](https://react.dev/reference/react/Component)
-- 🔗 [Переход с классовых компонентов на функциональные](https://react.dev/reference/react/Component#alternatives)
-- 🔗 [A Complete Guide to useEffect by Dan Abramov](https://overreacted.io/a-complete-guide-to-useeffect/)
+- 🔗 [Describe class components (React Legacy APIs)](https://react.dev/reference/react/Component)
+- 🔗 [Switching from class components to functional components](https://react.dev/reference/react/Component#alternatives)
+- 🔗 [A Complete Guide to usingEffect by Dan Abramov](https://overreacted.io/a-complete-guide-to-useeffect/)
 - 🔗 [Reusing Logic with Custom Hooks](https://react.dev/learn/reusing-logic-with-custom-hooks)
 
-[⬆ Back to Top](#знакомство-с-хуком-useeffect)
+[⬆ Back to Top](#introduction-to-the-useeffect-hook)
