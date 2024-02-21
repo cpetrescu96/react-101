@@ -1,32 +1,28 @@
-# Компоненты - одна из основных концепций React
+# Components - one of the core concepts of React
 
-📚 Содержание
+📚 Table of Contents
 
-- [Функциональный компонент](#функциональный-компонент)
-- [Использование компонентов](#использование-компонентов)
-- [Импорт и экспорт компонентов](#импорт-и-экспорт-компонентов)
-- [Компоненты и пропсы](#компоненты-и-пропсы)
-- [Чтение props внутри дочернего компонента](#чтение-props-внутри-дочернего-компонента)
-- [Указание значения по умолчанию для props](#указание-значения-по-умолчанию-для-props)
-- [Пересылка пропсов с помощью spread syntax JSX](#пересылка-пропсов-с-помощью-spread-syntax-jsx)
-- [Передача JSX как дочерние элементы (children)](#передача-jsx-как-дочерние-элементы-children)
+- [Functional Component](#functional-component)
+- [Using Components](#using-components)
+- [Importing and Exporting Components](#importing-and-exporting-components)
+- [Components and Props](#components-and-props)
+- [Reading Props Inside a Child Component](#reading-props-inside-a-child-component)
+- [Specifying Default Values for Props](#specifying-default-values-for-props)
+- [Passing Props Using Spread Syntax JSX](#passing-props-using-spread-syntax-jsx)
+- [Passing JSX as Children](#passing-jsx-as-children)
 
-`Компоненты React.js` - это небольшие блоки кода, которые вы можете использовать для создания переиспользуемых элементов
-интерфейса. Компонент являются основным строительным блоком при создании приложений на React.js.
+`React.js Components` are small blocks of code that you can use to create reusable user interface elements. Components are the fundamental building blocks when creating applications with React.js.
 
-Всего существует два типа пользовательских компонентов: `основанные на классах` и `основанные на функциях`.
+There are two types of custom components: `class-based` and `functional`.
 
-- Классовые компоненты наследуются от базового класса `React.Component` и имеют состояние (state), методы жизненного
-  цикла и многое другое.
-- Функциональные компоненты - это более простые компоненты, не имеющие состояния и методов жизненного цикла.
+- Class-based components inherit from the base class `React.Component` and have state, lifecycle methods, and more.
+- Functional components are simpler components without state and lifecycle methods.
 
-🚩 _Компоненты на базе класса раньше были наиболее популярным способом создания компонентов React. Однако с появлением
-React Hooks функциональные компоненты полностью заменили классовые._
+🚩 _Class-based components used to be the most popular way of creating React components. However, with the introduction of React Hooks, functional components completely replaced class-based ones._
 
-### Функциональный компонент
+### Functional Component
 
-Это функция JavaScript, возвращающая JSX. Функция не требует расширения и не нужно запоминать никаких специальных
-методов.
+It is a JavaScript function that returns JSX. The function does not require extension, and no special methods need to be memorized.
 
 ```tsx
 // Using ES6 arrow functions
@@ -47,26 +43,25 @@ const Footer = (): ReactElement => {
   );
 };
 
-// Определение ReactNode
+// Definition of ReactNode
 type ReactNode = string | number | boolean
   | ReactElement<any, string | JSXElementConstructor<any>>
   | Iterable<ReactNode> | ReactPortal | null | undefined
 ```
 
-🚩🚩🚩 Компоненты React - это обычные функции JavaScript, но их имена должны **начинаться с заглавной буквы**, иначе они не
-будут работать!
+🚩🚩🚩 React components are regular JavaScript functions, but their names must **start with a capital letter**, otherwise they won't work!
 
-**[⬆ Back to Top](#компоненты---одна-из-основных-концепций-react)**
+**[⬆ Back to Top](#components---one-of-the-core-concepts-of-react)**
 
-### Использование компонентов
+### Using Components
 
-Теперь, когда определены компоненты `<Header>` и `<Footer>`, их можно вложить в другие компоненты.
+Now that `<Header>` and `<Footer>` components are defined, they can be nested into other components.
 
 ```jsx
 const App = () => {
   return (
     <>
-      <Heder />
+      <Header />
       <main className="content">
         <img src="https://i.imgur.com/MK3eW3As.jpg" alt="Katherine Johnson" />
       </main>
@@ -76,12 +71,11 @@ const App = () => {
 };
 ```
 
-🚩🚩🚩 Без круглых скобок любой код в строках после возврата будет игнорироваться!
+🚩🚩🚩 Without parentheses, any code on lines after return will be ignored!
 
 🔗 [What are the rules for JavaScript's automatic semicolon insertion (ASI)?](https://stackoverflow.com/questions/2846283/what-are-the-rules-for-javascripts-automatic-semicolon-insertion-asi)
 
-🚩🚩🚩 Компоненты могут отображать другие компоненты, но их определения (декларация компонента) никогда не следует
-вкладывать друг в друга.
+🚩🚩🚩 Components can display other components, but their definitions (component declaration) should never be nested within each other.
 
 ```jsx
 export default function PageLayout() {
@@ -94,22 +88,19 @@ export default function PageLayout() {
 }
 ```
 
-Приведенный выше фрагмент будет работает очень медленно и будет вызывать ошибки.
+The above fragment will work very slowly and will cause errors.
 
-**[⬆ Back to Top](#компоненты---одна-из-основных-концепций-react)**
+**[⬆ Back to Top](#components---one-of-the-core-concepts-of-react)**
 
-### Импорт и экспорт компонентов
+### Importing and Exporting Components
 
-Магия компонентов заключается в их возможности повторного использования: вы можете создавать компоненты, состоящие из
-других компонентов. Но по мере того, как вы вкладываете все больше и больше компонентов, часто имеет смысл разбить их на
-разные файлы. Это позволяет вам легко сканировать файлы и повторно использовать компоненты в большем количестве мест.
+The magic of components lies in their reusability: you can create components composed of other components. But as you nest more and more components, it often makes sense to split them into different files. This allows you to easily scan files and reuse components in more places.
 
-**💡 Компонент React = Модуль = Файл**
+**💡 React Component = Module = File**
 
-`Root component file` - это обычно с именем App.js (app.tsx). Однако в зависимости от ваших настроек ваш корневой
-компонент может находиться в другом файле.
+`Root component file` is usually named App.js (app.tsx). However, depending on your settings, your root component may be located in another file.
 
-**💡В большинстве случаев, наименование файла будет определяться в рамках выбранной архитектуры.**
+**💡In most cases, the filename will be determined within the chosen architecture.**
 
 | Syntax  | Export statement                      | Import statement                        |
 |---------|---------------------------------------|-----------------------------------------|
@@ -125,15 +116,13 @@ export const Button = () => {
 export default Button;
 ```
 
-**[⬆ Back to Top](#компоненты---одна-из-основных-концепций-react)**
+**[⬆ Back to Top](#components---one-of-the-core-concepts-of-react)**
 
-### Компоненты и пропсы
+### Components and Props
 
-Компоненты React используют пропсы (Props) для взаимодействия друг с другом. Каждый родительский компонент может
-передавать некоторую информацию своим дочерним компонентам, передав им пропсы.
+React components use props to interact with each other. Each parent component can pass some information to its child components by passing props to them.
 
-Props - это информация, которую вы передаете в тег JSX. Например, `className`, `src`, `alt`, `width` и `height` - это
-некоторые из пропсов (атрибутов), которые можно передать в `<img>`
+Props are pieces of information you pass into a JSX tag. For example, `className`, `src`, `alt`, `width`, and `height` are some of the props (attributes) that can be passed to `<img>`.
 
 ```jsx
 const Avatar = () => {
@@ -149,11 +138,9 @@ const Avatar = () => {
 };
 ```
 
-Встроенные компоненты браузера в React `<img>`, `<div>`, `<input>` и т.д., ведут аналогично пользовательским
-компонентам, они могут принимать пропсы (
-атрибуты) и обработчики событий.
+Built-in browser components in React `<img>`, `<div>`, `<input>`, etc., behave similarly to custom components; they can accept props (attributes) and event handlers.
 
-Пример передачи пропсов в пользовательские компоненты:
+Example of passing props to custom components:
 
 ```jsx
 export const Profile = () => {
@@ -164,28 +151,28 @@ export const Profile = () => {
 };
 ```
 
-💡 Двойные фигурные скобки после `person=` это объект внутри фигурных скобок JSX.
+💡 Double curly braces after `person=` are an object inside JSX curly braces.
 
 🔗 [Using “double curlies”: CSS and other objects in JSX](https://react.dev/learn/javascript-in-jsx-with-curly-braces#using-double-curlies-css-and-other-objects-in-jsx)
 
-Передача пропсов в дочерний компонент не что иное, как передача аргументов в функцию JavaScript.
+Passing props to a child component is nothing but passing arguments to a JavaScript function.
 
-**[⬆ Back to Top](#компоненты---одна-из-основных-концепций-react)**
+**[⬆ Back to Top](#components---one-of-the-core-concepts-of-react)**
 
-### Чтение props внутри дочернего компонента
+### Reading Props Inside a Child Component
 
 ```jsx
-// Деструктурирующее присваивание (object destructuring)
+// Destructuring assignment (object destructuring)
 const Avatar = ({person, size}) => {
   // person and size are available here
 };
 ```
 
-Этот синтаксис называется "деструктуризацией" и эквивалентен чтению свойств из параметра функции.
+This syntax is called "destructuring" and is equivalent to reading properties from the function parameter.
 
-**[⬆ Back to Top](#компоненты---одна-из-основных-концепций-react)**
+**[⬆ Back to Top](#components---one-of-the-core-concepts-of-react)**
 
-### Указание значения по умолчанию для props
+### Specifying Default Values for Props
 
 ```jsx
 const Avatar = ({person, size = 100}) => {
@@ -193,9 +180,9 @@ const Avatar = ({person, size = 100}) => {
 };
 ```
 
-**[⬆ Back to Top](#компоненты---одна-из-основных-концепций-react)**
+**[⬆ Back to Top](#components---one-of-the-core-concepts-of-react)**
 
-### Пересылка пропсов с помощью spread syntax JSX
+### Passing Props Using Spread Syntax JSX
 
 ```jsx
 const Profile = (props) => {
@@ -207,11 +194,11 @@ const Profile = (props) => {
 };
 ```
 
-**[⬆ Back to Top](#компоненты---одна-из-основных-концепций-react)**
+**[⬆ Back to Top](#components---one-of-the-core-concepts-of-react)**
 
-### Передача JSX как дочерние элементы (children)
+### Passing JSX as Children
 
-Обычно в браузере используются вложенные теги
+Usually, nested tags are used in the browser
 
 ```html
 <div>
@@ -219,7 +206,7 @@ const Profile = (props) => {
 </div>
 ```
 
-Таким же образом можно вложить компоненты
+Similarly, components can be nested
 
 ```js
 <Card>
@@ -227,8 +214,7 @@ const Profile = (props) => {
 </Card>
 ```
 
-Когда вы вкладываете контент в тег JSX, родительский компонент получит этот контент в `props`,
-называемом `children` (`props.children`).
+When you embed content in JSX tags, the parent component will receive that content in `props`, called `children` (`props.children`).
 
 ```tsx
 const Card = ({children}) => {
@@ -243,10 +229,9 @@ type Props = {
 };
 ```
 
-💡 Пропсы (props) - это моментальные снимки значений, доступные только для чтения: при каждом рендере компонент
-получает новую версию пропсов.
+💡 Props are snapshots of values, available for reading only: on each render, the component receives a new version of props.
 
-💡 Пропсы (props) нельзя изменить (immutable). Если нужна интерактивность, то нужно будет установить состояние.
+💡 Props cannot be changed (immutable). If interactivity is needed, state needs to be set.
 
 ```jsx
 const Clock = ({color, time}) => {
@@ -254,13 +239,11 @@ const Clock = ({color, time}) => {
 };
 ```
 
-Когда вам нужно отреагировать на ввод пользователя (например, изменить выбранный цвет), вам нужно будет "установить
-состояние", о чем вы можете узнать в
-[State: A Component's Memory](https://react.dev/learn/state-a-components-memory)
+When you need to respond to user input (e.g., change selected color), you will need to "set state," which you can learn about in [State: A Component's Memory](https://react.dev/learn/state-a-components-memory)
 
-Документация по теме:
+Documentation on the subject:
 
 - 🔗 [Your First Component](https://react.dev/learn/your-first-component)
 - 🔗 [Describing the UI](https://react.dev/learn/describing-the-ui)
 
-**[⬆ Back to Top](#компоненты---одна-из-основных-концепций-react)**
+**[⬆ Back to Top](#components---one-of-the-core-concepts-of-react)**
