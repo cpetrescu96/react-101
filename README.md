@@ -1,100 +1,87 @@
-# Состояние: память компонента, знакомство с useState
+# Component State: Introducing useState
 
-📚 Содержание
+📚 Table of Contents
 
-- [Что такое хук (Hook) в React](#что-такое-хук-hook-в-react)
-- [Объявление переменной состояния при помощи useState](#объявление-переменной-состояния-при-помощи-usestate)
-- [Как работает useState](#как-работает-usestate)
-- [Предоставление компоненту нескольких переменных состояния](#предоставление-компоненту-нескольких-переменных-состояния)
-- [Состояние является изолированным и приватным](#состояние-является-изолированным-и-приватным)
+- [What is a Hook in React](#what-is-a-hook-in-react)
+- [Declaring State Variables using useState](#declaring-state-variables-using-usestate)
+- [How useState Works](#how-usestate-works)
+- [Providing Multiple State Variables to a Component](#providing-multiple-state-variables-to-a-component)
+- [State Is Isolated and Private](#state-is-isolated-and-private)
 
-`Состояние (State)` описывает текущее состояние какого-либо объекта или системы в определенный момент времени.
+`State` describes the current condition of an object or system at a particular point in time.
 
-В React, компоненты могут иметь свое внутреннее состояние (память), которое может изменяться в соответствии с действиями
-пользователя или изменениями внешних данных. Когда состояние компонента изменяется, React обновляет пользовательский
-интерфейс в соответствии с новым состоянием, чтобы отобразить изменения.
+In React, components can have their own internal state (memory) that can change based on user actions or changes in external data. When a component's state changes, React updates the user interface to reflect the new state.
 
-В React такая память, специфичная для компонента, называется состоянием (State).
+In React, this component-specific memory is called `State`.
 
-### Что такое хук (Hook) в React
+### What is a Hook in React
 
-💡 Хуки - это специальные функции, которые доступны только во время рендеринга React, они позволяют «подключиться» к
-различным возможностям библиотеки React и предназначены для использования в функциональных компонентах. Например,
-хук `useState` предоставляет компонентам доступ к состоянию React.
+💡 Hooks are special functions available only during React rendering that allow you to "hook into" various features of the React library and are intended for use in functional components. For example, the `useState` hook provides components access to React state.
 
-💡 Хуки можно создавать самостоятельно, создание пользовательских хуков позволяет перенести логику компонентов в функции,
-которые можно повторно использовать.
+💡 Custom hooks can be created, allowing you to move component logic into functions that can be reused.
 
-💡 Название хука (функции) всегда начинается со слова `use`, например `useEffect`, `useState`, `useReducer` в том числе и
-для пользовательских хуков, так React понимает, что будет использована специальная функция хук.
+💡 Hook names (functions) always start with the word `use`, such as `useEffect`, `useState`, `useReducer`, including for custom hooks, so React understands that a special hook function will be used.
 
-💡 Хуки можно вызывать только на верхнем уровне компонентов (или пользовательских хуков), т.е. непосредственно внутри
-функционального компонента React. Хуки нельзя вызывать внутри условий, циклов или других вложенных функций.
+💡 Hooks can only be called at the top level of components (or custom hooks), i.e., directly inside a React functional component. Hooks cannot be called inside conditions, loops, or other nested functions.
 
-**[⬆ Back to Top](#состояние-память-компонента-знакомство-с-usestate)**
+**[⬆ Back to Top](#component-state-introducing-usestate)**
 
-### Объявление переменной состояния при помощи useState
+### Declaring State Variables using useState
 
-Хук `useState` предоставляет следующие две сущности:
+The `useState` hook provides two entities:
 
-- Переменная состояния для сохранения данных между рендерами компонента.
-- Функция установки состояния для обновления переменной и запуска React для повторной визуализации компонента (повторный
-  рендер).
+- A state variable to store data between renders of the component.
+- A state-setting function to update the variable and instruct React to re-render the component.
 
-Чтобы добавить переменную состояния, импортируйте `useState` из React в верхней части файла:
+To add a state variable, import `useState` from React at the top of your file:
 
 ```jsx
 import { useState } from 'react';
 ```
 
-Далее в начало функционального компонента нужно поместить объявление переменной состояния в виде вызова хука `useState`.
+Then, place the state variable declaration at the beginning of your functional component as a call to the `useState` hook.
 
-Когда вы вызываете `useState`, вы сообщаете React, что хотите, чтобы этот компонент что-то запомнил.
+When you call `useState`, you inform React that you want this component to remember something.
 
 ```jsx
 export const Counter = () => {
-  // Вызов хука в самом начале функционального компонента
+  // Call the hook at the beginning of the functional component
   const [counterValue, setCounterValue] = useState(0);
   // ...
 };
 ```
 
-Этот синтаксис называется [деструктуризацией массива](https://javascript.info/destructuring-assignment) и позволяет
-считывать значения из массива. Массив, возвращаемый `useState`, всегда содержит ровно два элемента - переменную
-состояния и функцию установки состояния.
+Call the hook at the beginning of the functional component [array destructuring](https://javascript.info/destructuring-assignment) allowing you to read values from an array. 
+The array returned by useState always contains exactly two elements: the state variable and the state-setting function.
 
-По соглашению эту пару называют `const [something, setSomething]`. Вы можете назвать это как угодно, но соглашения
-упрощают понимание в разных проектах.
+By convention, this pair is called const [something, setSomething]. You can name it anything, but conventions aid understanding across projects.
 
-💡 Единственным аргументом `useState` является начальное значение вашей переменной состояния.
+💡 The only argument to useState is the initial value of your state variable.
 
-Для того что бы изменить состояние (задать новое значение переменной `counterValue`) необходимо вызвать функцию `setCounterValue` и
-передать новое значение в качестве аргумента:
+To change the state (set a new value for the counterValue variable), you need to call the setCounterValue function and pass the new value as an argument:
 
 ```jsx
-// Новое значение для переменной index будет = 3
+// The new value for the counterValue variable will be 3
 setCounterValue(3);
 ```
 
-**[⬆ Back to Top](#состояние-память-компонента-знакомство-с-usestate)**
+**[⬆ Back to Top](#component-state-introducing-usestate)**
 
-### Как работает useState
+### How useState works
 
-1. Ваш компонент визуализируется в первый раз. Поскольку вы передали `0` в `useState` в качестве начального
-   значения `counterValue`, он вернет `[0, setCounterValue]`. React запоминает, что `0` - это последнее значение состояния.
-2. Вы обновляете состояние. Когда пользователь нажимает кнопку, он вызывает `setCounterValue(counterValue + 1)`. Текущее
-   значение `counterValue` равно `0`, далее происходит выполнение `setCounterValue(1)`. Это сообщает React, что `counterValue` теперь
-   равен `1`, и запускает еще один рендеринг (повторный рендер компонента).
-3. Второй рендер вашего компонента. React по-прежнему видит `useState(0)`, но поскольку React помнит, что вы установили `counterValue` равный `1`, вместо этого он возвращает` [1, setCounterValue]`.
+1. Your component is rendered for the first time. Since you passed `0` to `useState` as initial
+   value of `counterValue`, it will return `[0, setCounterValue]`. React remembers that `0` is the last state value.
+2. You update the state. When the user clicks the button, it calls `setCounterValue(counterValue + 1)`. Current
+   the value of `counterValue` is `0`, then `setCounterValue(1)` is executed. This tells React that `counterValue` is now
+   is `1`, and starts another render (re-rendering the component).
+3. Second render of your component. React still sees `useState(0)`, but since React remembers that you set `counterValue` to `1`, it returns `[1, setCounterValue]` instead.
 
-Таким образом компонент получает возможность запоминать данные (память компонента) между повторной визуализацией
-компонента.
+Thus, the component can remember data (component memory) between renders.
 
-**[⬆ Back to Top](#состояние-память-компонента-знакомство-с-usestate)**
+**[⬆ Back to Top](#component-state-introducing-usestate)**
 
-### Предоставление компоненту нескольких переменных состояния
-
-В одном компоненте можно иметь сколько угодно переменных состояния и любого типа.
+### Providing Multiple State Variables to a Component
+You can have as many state variables of any type in one component.
 
 ```jsx
 import { useState } from 'react';
@@ -107,49 +94,49 @@ export const Gallery = () => {
 };
 ```
 
-Рекомендуется иметь несколько переменных состояния, если их состояние не связано, как, например, `counterValue` и `showMore` в
-этом примере. Но если вы обнаружите, что часто меняете две переменные состояния вместе, возможно, будет проще объединить
-их в одну. Например, если у вас есть форма со многими полями, удобнее иметь одну переменную состояния, содержащую
-объект, чем переменную состояния для каждого поля.
+It is recommended to have multiple state variables if their state is not related, such as `counterValue` and `showMore` in
+this example. But if you find yourself frequently changing two state variables together, it might be easier to combine
+them into one. For example, if you have a form with many fields, it is more convenient to have one state variable containing
+object than a state variable for each field.
 
-Внутри React хранит массив пар состояний для каждого компонента. Он также поддерживает текущий индекс пары, которому
-перед рендерингом присвоено значение 0. Каждый раз, когда вы вызываете `useState`, React предоставляет вам следующую
-пару состояний и увеличивает индекс.
+Internally, React stores an array of state pairs for each component. It also maintains the current pair index, which
+set to 0 before rendering. Every time you call `useState`, React gives you the following
+a couple of states and increases the index.
 
-Пример как работает `useState` изнутри, можно посмотреть на странице официальной документации - [Giving a component multiple state variables](https://react.dev/learn/state-a-components-memory#giving-a-component-multiple-state-variables).
+An example of how `useState` works from the inside can be found on the official documentation page - [Giving a component multiple state variables](https://react.dev/learn/state-a-components-memory#giving-a-component-multiple-state-variables).
 
-**[⬆ Back to Top](#состояние-память-компонента-знакомство-с-usestate)**
+**[⬆ Back to Top](#component-state-introducing-usestate)**
 
-### Состояние является изолированным и приватным
+### State is isolated and private
 
-Состояние, создаваемое с помощью `useState`, является изолированным и частным для каждого визуализированного компонента
-на экране. Это означает, что каждый компонент имеет своё собственное состояние, и это состояние не может быть доступно
-напрямую из других компонентов или изменено другими компонентами.
+The state created with `useState` is isolated and private to each rendered component
+on the screen. This means that each component has its own state, and this state cannot be accessed
+directly from other components or modified by other components.
 
-Если вы визуализируете один и тот же компонент дважды в разных местах, то в обоих случаях у каждого компонента будет
-свое полностью изолированное состояние и между собой они никак не будут связаны, каждая копия получит свое собственное
-состояние.
+If you render the same component twice in different places, then in both cases each component will have
+their completely isolated state and they will not be connected to each other in any way, each copy will receive its own
+state.
 
-### Итог
+### Bottom line
 
-- Используйте переменную состояния, когда компоненту необходимо «запомнить» некоторую информацию между рендерами
-  компонента.
-- Переменные состояния объявляются путем вызова хука `useState`.
-- Хуки - это специальные функции, которые начинаются со слова `use`. Они позволяют вам «подключаться» к таким функциям
-  React, как состояние (State).
-- Вызов хуков, включая `useState`, допустим только на верхнем уровне компонента или другого хука.
-- Хук `useState` возвращает пару значений: текущее состояние и функцию для его обновления `[something, setSomething]`.
-- Хук `useState` в качестве значения может содержать любую структуру данных.
-- Можно иметь более одной переменной состояния. Внутри React сопоставляет их по порядку.
+- Use a state variable when a component needs to "remember" some information between renders
+  component.
+- State variables are declared by calling the `useState` hook.
+- Hooks are special functions that begin with the word `use`. They allow you to "tap into" such features
+  React as a state (State).
+- Calling hooks, including `useState`, is only allowed at the top level of a component or other hook.
+- The `useState` hook returns a pair of values: the current state and a function to update it `[something, setSomething]`.
+- The `useState` hook can contain any data structure as a value.
+- You can have more than one state variable. Internally, React matches them in order.
 
-**[⬆ Back to Top](#состояние-память-компонента-знакомство-с-usestate)**
+**[⬆ Back to Top](#component-state-introducing-usestate)**
 
-Готовый пример с приложением находится в `src`.
+The finished example with the application is located in `src`.
 
-Для запуска примера с готовым приложением выполните команды:
+To run the example with a ready-made application, run the commands:
 
 ```shell
-git clone https://github.com/shopot/react-101.git
+git clone https://github.com/cpetrescu96/react-101.git
 
 git checkout hook-use-state
 
@@ -164,4 +151,4 @@ npm run dev
 - 🔗 [Choosing the State Structure (react.dev)](https://react.dev/learn/choosing-the-state-structure)
 - 🔗 [ React Hooks: Not Magic, Just Arrays (medium.com)](https://medium.com/@ryardley/react-hooks-not-magic-just-arrays-cd4f1857236e)
 
-**[⬆ Back to Top](#состояние-память-компонента-знакомство-с-usestate)**
+**[⬆ Back to Top](#component-state-introducing-usestate)**
